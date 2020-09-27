@@ -1,0 +1,69 @@
+﻿using System;
+using System.Text.Json;
+using System.Threading.Tasks;
+using YahooFinance.Runner.Enums;
+using YahooFinance.Runner.Helpers;
+using YahooFinance.Runner.Models;
+using YahooFinance.Runner.Models.Contracts;
+using YahooFinance.Runner.Models.Contracts.HistoricalData;
+
+namespace YahooFinance.Runner.Services
+{
+    public class YahooService
+    {
+        //public async Task<HistoricalData> GetHistoricalDataAsync(Frequency frequency, DateTime startTime,
+        //    DateTime endTime, string symbol)
+        //{
+        //    var yfStartTime = startTime.ToUnixTimeSeconds();
+        //    var yfEndTimeEpoch = endTime.ToUnixTimeSeconds();
+        //    var yfFrequency = frequency.GetFrequencyString();
+
+        //    var url =
+        //        $"?frequency={yfFrequency}" +
+        //        "&filter=history" +
+        //        $"&period1={yfStartTime}" +
+        //        $"&period2={yfEndTimeEpoch}" +
+        //        $"&symbol={symbol}";
+
+        //    var response = await HttpClientExtensions.HttpGetClient(url);
+
+        //    var json = await response.Content.ReadAsStringAsync();
+
+        //    var contract = JsonSerializer.Deserialize<HistoricalDataContract>(json);
+
+        //    return contract.GetHistoricalData();
+        //}
+
+        public async Task<HistoricalData> GetHistoricalDataAsyncYahoo(Interval frequency, DateTime startTime,
+            DateTime endTime, string symbol, bool includePrePost)
+        {
+            var yStartTime = startTime.ToUnixTimeSeconds();
+            var yEndTimeEpoch = endTime.ToUnixTimeSeconds();
+            var yInterval = frequency.GetIntervalString();
+
+            var url = $"{symbol}" +
+                      $"?symbol={symbol}" +
+                      $"&period1={yStartTime}" +
+                      $"&period2={yEndTimeEpoch}" +
+                      $"&interval={yInterval}" +
+                      $"&includePrePost={includePrePost}" +
+                      "&events=div%2Csplit";
+
+            //var url =
+            //    $"?frequency={yfFrequency}" +
+            //    "&filter=history" +
+            //    $"&period1={yfStartTime}" +
+            //    $"&period2={yfEndTimeEpoch}" +
+            //    $"&symbol={symbol}";
+
+            var response = await HttpClientExtensions.HttpGetClientYahoo(url);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var contract = JsonSerializer.Deserialize<HistoricalDataContract>(json);
+
+            return contract.GetHistoricalData();
+            //return contract.GetHistoricalData();
+        }
+    }
+}
