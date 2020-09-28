@@ -43,6 +43,19 @@ namespace YahooFinance.Runner.Helpers
             return response;
         }
 
+        public static async Task<HttpResponseMessage> GetV10Client(string url)
+        {
+            using var client = new HttpClient
+            {
+                BaseAddress = new Uri("https://query1.finance.yahoo.com/v10/finance/quoteSummary/")
+            };
+
+            var response = await client.GetAsync(url);
+
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
 
     }
 }

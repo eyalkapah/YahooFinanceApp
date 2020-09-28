@@ -5,93 +5,93 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
     public class ResultContract
     {
         [JsonPropertyName("assetProfile")]
-        public AssetProfileContract assetProfile { get; set; }
+        public AssetProfileContract AssetProfile { get; set; }
 
         [JsonPropertyName("recommendationTrend")]
-        public RecommendationTrendContract recommendationTrend { get; set; }
+        public RecommendationTrendContract RecommendationTrend { get; set; }
 
         [JsonPropertyName("cashflowStatementHistory")]
-        public CashFlowStatementHistoryContract cashflowStatementHistory { get; set; }
+        public CashFlowStatementHistoryContract CashflowStatementHistory { get; set; }
 
         [JsonPropertyName("indexTrend")]
-        public ValueContract indexTrend { get; set; }
+        public IndexTrendContract IndexTrend { get; set; }
 
         [JsonPropertyName("defaultKeyStatistics")]
-        public DefaultKeyStatisticsContract defaultKeyStatistics { get; set; }
+        public DefaultKeyStatisticsContract DefaultKeyStatistics { get; set; }
 
         [JsonPropertyName("industryTrend")]
-        public IndustryTrendContract industryTrend { get; set; }
+        public IndustryTrendContract IndustryTrend { get; set; }
 
         [JsonPropertyName("incomeStatementHistory")]
-        public IncomeStatementHistoryContract incomeStatementHistory { get; set; }
+        public IncomeStatementHistoryContract IncomeStatementHistory { get; set; }
 
         [JsonPropertyName("fundOwnership")]
-        public FundOwnerShipContract fundOwnership { get; set; }
+        public FundOwnerShipContract FundOwnership { get; set; }
 
         [JsonPropertyName("summaryDetail")]
-        public SummaryDetailContract summaryDetail { get; set; }
+        public SummaryDetailContract SummaryDetail { get; set; }
 
         [JsonPropertyName("insiderHolders")]
-        public InsiderHoldersContract insiderHolders { get; set; }
+        public InsiderHoldersContract InsiderHolders { get; set; }
 
         [JsonPropertyName("calendarEvents")]
-        public CalendarEventsContract calendarEvents { get; set; }
+        public CalendarEventsContract CalendarEvents { get; set; }
 
         [JsonPropertyName("upgradeDowngradeHistory")]
-        public UpgradeDowngradeHistoryContract upgradeDowngradeHistory { get; set; }
+        public UpgradeDowngradeHistoryContract UpgradeDowngradeHistory { get; set; }
 
         [JsonPropertyName("price")]
-        public PriceContract price { get; set; }
+        public PriceContract Price { get; set; }
 
         [JsonPropertyName("balanceSheetHistory")]
-        public BalanceSheetHistoryContract balanceSheetHistory { get; set; }
+        public BalanceSheetHistoryContract BalanceSheetHistory { get; set; }
 
         [JsonPropertyName("earningsTrend")]
-        public EarningsTrendContract earningsTrend { get; set; }
+        public EarningsTrendContract EarningsTrend { get; set; }
 
         [JsonPropertyName("secFilings")]
-        public SecFilingsContract secFilings { get; set; }
+        public SecFilingsContract SecFilings { get; set; }
 
         [JsonPropertyName("institutionOwnership")]
-        public InstitutionOwnershipContract institutionOwnership { get; set; }
+        public InstitutionOwnershipContract InstitutionOwnership { get; set; }
 
         [JsonPropertyName("majorHoldersBreakdown")]
-        public MajorHoldersBreakdownContract majorHoldersBreakdown { get; set; }
+        public MajorHoldersBreakdownContract MajorHoldersBreakdown { get; set; }
 
         [JsonPropertyName("balanceSheetHistoryQuarterly")]
-        public BalanceSheetHistoryQuarterlyContract balanceSheetHistoryQuarterly { get; set; }
+        public BalanceSheetHistoryQuarterlyContract BalanceSheetHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earningsHistory")]
-        public EarningshistoryContract earningsHistory { get; set; }
+        public EarningshistoryContract EarningsHistory { get; set; }
 
         [JsonPropertyName("majorDirectHolders")]
-        public MajorDirectHoldersContract majorDirectHolders { get; set; }
+        public MajorDirectHoldersContract MajorDirectHolders { get; set; }
 
         [JsonPropertyName("esgScores")]
-        public EsgScoresContract esgScores { get; set; }
+        public EsgScoresContract EsgScores { get; set; }
 
         [JsonPropertyName("summaryProfile")]
-        public SummaryProfileContract summaryProfile { get; set; }
+        public SummaryProfileContract SummaryProfile { get; set; }
 
         [JsonPropertyName("netSharePurchaseActivity")]
-        public NetSharePurchaseActivityContract netSharePurchaseActivity { get; set; }
+        public NetSharePurchaseActivityContract NetSharePurchaseActivity { get; set; }
 
         [JsonPropertyName("insiderTransactions")]
-        public InsiderTransactionsContract insiderTransactions { get; set; }
+        public InsiderTransactionsContract InsiderTransactions { get; set; }
 
         [JsonPropertyName("sectorTrend")]
-        public SectortrEndContract sectorTrend { get; set; }
+        public SectortrEndContract SectorTrend { get; set; }
 
         [JsonPropertyName("incomeStatementHistoryQuarterly")]
-        public IncomeStatementHistoryQuarterlyContract incomeStatementHistoryQuarterly { get; set; }
+        public IncomeStatementHistoryQuarterlyContract IncomeStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("cashflowStatementHistoryQuarterly")]
-        public CashFlowStatementHistoryQuarterlyContract cashflowStatementHistoryQuarterly { get; set; }
+        public CashFlowStatementHistoryQuarterlyContract CashflowStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earnings")]
-        public Earnings1Contract earnings { get; set; }
+        public Earnings1Contract Earnings { get; set; }
 
         [JsonPropertyName("financialData")]
-        public FinancialDataContract financialData { get; set; }
+        public FinancialDataContract FinancialData { get; set; }
     }
 }

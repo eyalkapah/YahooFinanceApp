@@ -5,7 +5,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
     public class ValueContract
     {
         [JsonPropertyName("raw")]
-        public int Raw { get; set; }
+        public long Raw { get; set; }
 
         [JsonPropertyName("fmt")]
         public string Fmt { get; set; }

@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using YahooFinance.Runner.Enums;
 using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
-using YahooFinance.Runner.Models.Contracts;
+using YahooFinance.Runner.Models.Contracts.FundamentalData;
 using YahooFinance.Runner.Models.Contracts.HistoricalData;
+using YahooFinance.Runner.Models.FundamentalData;
 
 namespace YahooFinance.Runner.Services
 {
@@ -64,6 +65,19 @@ namespace YahooFinance.Runner.Services
 
             return contract.GetHistoricalData();
             //return contract.GetHistoricalData();
+        }
+
+        public async Task<FundamentalData> GetFundamentalDataAsync(string symbol, params string[] modules)
+        {
+            var url = $"{symbol}?modules=assetProfile,recommendationTrend,cashflowStatementHistory,indexTrend";
+
+            var response = await HttpClientExtensions.GetV10Client(url);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var contract = JsonSerializer.Deserialize<FundamentalDataContract>(json);
+
+            return contract.GetFundamentalData();
         }
     }
 }

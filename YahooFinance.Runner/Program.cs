@@ -17,11 +17,44 @@ namespace YahooFinance.Runner
            //    , new DateTime(2020, 9, 25, 12, 0, 0)
            //    , "MSFT");
 
-           var result = await yfService.GetHistoricalDataAsyncYahoo(Interval.OneDay
-               , new DateTime(2020, 9, 1, 12, 0, 0)
-               , new DateTime(2020, 9, 25, 12, 0, 0)
-               , "MSFT", true);
+           //var result = await yfService.GetHistoricalDataAsyncYahoo(Interval.OneDay
+           //    , new DateTime(2020, 9, 1, 12, 0, 0)
+           //    , new DateTime(2020, 9, 25, 12, 0, 0)
+           //    , "MSFT", true);
 
+
+           var fundamentalData = await yfService.GetFundamentalDataAsync("MSFT");
+
+           foreach (var result in fundamentalData.QuoteSummary.Result)
+           {
+               //var assetProfile = result.AssetProfile;
+
+               //foreach (var assetProfileCompanyOfficer in assetProfile.CompanyOfficers)
+               //{
+                   
+               //}
+
+               var recommendation = result.RecommendationTrend;
+
+               foreach (var trend in recommendation.Trend)
+               {
+                   
+               }
+
+               var c = result.CashflowStatementHistory;
+
+               foreach (var cCashFlowStatement in c.CashFlowStatements)
+               {
+                   
+               }
+
+               var i = result.IndexTrend;
+
+               foreach (var iEstimate in i.Estimates)
+               {
+                   
+               }
+           }
             Console.ReadLine();
         }
 
