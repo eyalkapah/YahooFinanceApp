@@ -10,15 +10,15 @@
 
         public IndexTrend IndexTrend { get; set; }
 
-        //public DefaultKeyStatisticsContract DefaultKeyStatistics { get; set; }
+        public DefaultKeyStatistics DefaultKeyStatistics { get; set; }
 
-        //public IndustryTrendContract IndustryTrend { get; set; }
+        public IndustryTrend IndustryTrend { get; set; }
 
-        //public IncomeStatementHistoryContract IncomeStatementHistory { get; set; }
+        public IncomeStatementHistory IncomeStatementHistory { get; set; }
 
-        //public FundOwnerShipContract FundOwnership { get; set; }
+        public FundOwnerShip FundOwnership { get; set; }
 
-        //public SummaryDetailContract SummaryDetail { get; set; }
+        public SummaryDetail SummaryDetail { get; set; }
 
         //public InsiderHoldersContract InsiderHolders { get; set; }
 

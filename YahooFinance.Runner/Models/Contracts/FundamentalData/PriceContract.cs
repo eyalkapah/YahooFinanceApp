@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using YahooFinance.Runner.Models.Contracts.FundamentalData.StubClasses;
 
 namespace YahooFinance.Runner.Models.Contracts.FundamentalData
 {

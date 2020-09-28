@@ -143,7 +143,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         [JsonPropertyName("enterpriseToEbitda")]
         public ShortenedValueContract EnterpriseToEbitda { get; set; }
 
-        [JsonPropertyName("_52WeekChange")]
+        [JsonPropertyName("52WeekChange")]
         public ShortenedValueContract _52WeekChange { get; set; }
 
         [JsonPropertyName("SandP52WeekChange")]

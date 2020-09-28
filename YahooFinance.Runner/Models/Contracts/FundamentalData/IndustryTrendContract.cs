@@ -9,7 +9,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public int MaxAge { get; set; }
 
         [JsonPropertyName("symbol")]
-        public object Symbol { get; set; }
+        public string Symbol { get; set; }
 
         [JsonPropertyName("peRatio")]
         public PeRatio1Contract PeRatio { get; set; }

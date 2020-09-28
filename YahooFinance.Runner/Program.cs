@@ -54,6 +54,16 @@ namespace YahooFinance.Runner
                {
                    
                }
+
+               var d = result.DefaultKeyStatistics;
+
+               var it = result.IndustryTrend;
+
+               var itt = result.IncomeStatementHistory;
+
+               var fo = result.FundOwnership;
+
+               var sd = result.SummaryDetail;
            }
             Console.ReadLine();
         }
