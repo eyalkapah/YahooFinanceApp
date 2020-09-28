@@ -62,36 +62,36 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public BalanceSheetHistoryQuarterlyContract balanceSheetHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earningsHistory")]
-        public Earningshistory earningsHistory { get; set; }
+        public EarningshistoryContract earningsHistory { get; set; }
 
         [JsonPropertyName("majorDirectHolders")]
-        public Majordirectholders majorDirectHolders { get; set; }
+        public MajorDirectHoldersContract majorDirectHolders { get; set; }
 
         [JsonPropertyName("esgScores")]
-        public Esgscores esgScores { get; set; }
+        public EsgScoresContract esgScores { get; set; }
 
         [JsonPropertyName("summaryProfile")]
-        public Summaryprofile summaryProfile { get; set; }
+        public SummaryProfileContract summaryProfile { get; set; }
 
         [JsonPropertyName("netSharePurchaseActivity")]
-        public Netsharepurchaseactivity netSharePurchaseActivity { get; set; }
+        public NetSharePurchaseActivityContract netSharePurchaseActivity { get; set; }
 
         [JsonPropertyName("insiderTransactions")]
-        public Insidertransactions insiderTransactions { get; set; }
+        public InsiderTransactionsContract insiderTransactions { get; set; }
 
         [JsonPropertyName("sectorTrend")]
-        public Sectortrend sectorTrend { get; set; }
+        public SectortrEndContract sectorTrend { get; set; }
 
         [JsonPropertyName("incomeStatementHistoryQuarterly")]
-        public Incomestatementhistoryquarterly incomeStatementHistoryQuarterly { get; set; }
+        public IncomeStatementHistoryQuarterlyContract incomeStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("cashflowStatementHistoryQuarterly")]
-        public Cashflowstatementhistoryquarterly cashflowStatementHistoryQuarterly { get; set; }
+        public CashFlowStatementHistoryQuarterlyContract cashflowStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earnings")]
-        public Earnings1 earnings { get; set; }
+        public Earnings1Contract earnings { get; set; }
 
         [JsonPropertyName("financialData")]
-        public Financialdata financialData { get; set; }
+        public FinancialDataContract financialData { get; set; }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using YahooFinance.Runner.Models.Contracts.FundamentalData.StubClasses;
 
 namespace YahooFinance.Runner.Models.Contracts.FundamentalData
 {
-    public class IndustryTrendContract
+    public class SectortrEndContract
     {
         [JsonPropertyName("maxAge")]
         public int MaxAge { get; set; }
@@ -12,10 +11,10 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public object Symbol { get; set; }
 
         [JsonPropertyName("peRatio")]
-        public PeRatio1Contract PeRatio { get; set; }
+        public PeRatio2Contract PeRatio { get; set; }
 
         [JsonPropertyName("pegRatio")]
-        public PegRatio2Contract PegRatio { get; set; }
+        public PegRatio3Contract PegRatio { get; set; }
 
         [JsonPropertyName("estimates")]
         public object[] Estimates { get; set; }

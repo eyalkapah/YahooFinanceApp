@@ -1,4 +1,4 @@
-﻿namespace YahooFinance.Runner.Models.Contracts.FundamentalData
+﻿namespace YahooFinance.Runner.Models.Contracts.FundamentalData.StubClasses
 {
     public class MinorityInterestContract
     {

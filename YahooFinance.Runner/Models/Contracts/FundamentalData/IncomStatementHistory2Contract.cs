@@ -1,9 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using YahooFinance.Runner.Models.Contracts.FundamentalData.StubClasses;
 
 namespace YahooFinance.Runner.Models.Contracts.FundamentalData
 {
-    public class IncomeStatementHistory1Contract
+    public class IncomStatementHistory2Contract
     {
         [JsonPropertyName("maxAge")]
         public int MaxAge { get; set; }
@@ -27,10 +26,10 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public ValueContract SellingGeneralAdministrative { get; set; }
 
         [JsonPropertyName("nonRecurring")]
-        public NonrecurringContract NonRecurring { get; set; }
+        public NonRecurring1Contract NonRecurring { get; set; }
 
         [JsonPropertyName("otherOperatingExpenses")]
-        public OtherOperatingExpensesContract OtherOperatingExpenses { get; set; }
+        public OtherOperatingExpenses1Contract OtherOperatingExpenses { get; set; }
 
         [JsonPropertyName("totalOperatingExpenses")]
         public ValueContract TotalOperatingExpenses { get; set; }
@@ -54,22 +53,22 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public ValueContract IncomeTaxExpense { get; set; }
 
         [JsonPropertyName("minorityInterest")]
-        public MinorityInterestContract MinorityInterest { get; set; }
+        public MinorityInterest1Contract MinorityInterest { get; set; }
 
         [JsonPropertyName("netIncomeFromContinuingOps")]
         public ValueContract NetIncomeFromContinuingOps { get; set; }
 
         [JsonPropertyName("discontinuedOperations")]
-        public DiscontinuedOperationsContract DiscontinuedOperations { get; set; }
+        public DiscontinuedOperations1Contract DiscontinuedOperations { get; set; }
 
         [JsonPropertyName("extraordinaryItems")]
-        public ExtraOrdinaryItemsContract ExtraordinaryItems { get; set; }
+        public ExtraOrdinaryItems1Contract ExtraordinaryItems { get; set; }
 
         [JsonPropertyName("effectOfAccountingCharges")]
-        public EffectOfAccountingChargesContract EffectOfAccountingCharges { get; set; }
+        public EffectOfAccountingCharges1Contract EffectOfAccountingCharges { get; set; }
 
         [JsonPropertyName("otherItems")]
-        public OtherItemsContract OtherItems { get; set; }
+        public OtherItems1Contract OtherItems { get; set; }
 
         [JsonPropertyName("netIncome")]
         public ValueContract NetIncome { get; set; }
