@@ -39,7 +39,101 @@ namespace YahooFinance.Runner
                     IndustryTrend = GetIndustryTrend(resultContract.IndustryTrend),
                     IncomeStatementHistory = GetIncomeStatementHistory(resultContract.IncomeStatementHistory),
                     FundOwnership = GetFundOwnership(resultContract.FundOwnership),
-                    SummaryDetail = GetSummaryDetail(resultContract.SummaryDetail)
+                    SummaryDetail = GetSummaryDetail(resultContract.SummaryDetail),
+                    InsiderHolders = GetInsiderHolders(resultContract.InsiderHolders),
+                    CalendarEvents = GetCalendarEvents(resultContract.CalendarEvents),
+                    UpgradeDowngradeHistory = GetUpgradeDowngradeHistory(resultContract.UpgradeDowngradeHistory)
+                };
+            }
+        }
+
+        private static UpgradeDowngradeHistory GetUpgradeDowngradeHistory(UpgradeDowngradeHistoryContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new UpgradeDowngradeHistory
+            {
+                MaxAge = contract.MaxAge,
+                History = GetHistory(contract.History)
+            };
+        }
+
+        private static IEnumerable<History> GetHistory(HistoryContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new History
+                {
+                    Action = c.Action,
+                    EpochGradeDate = c.EpochGradeDate,
+                    Firm = c.Firm,
+                    FromGrade = c.FromGrade,
+                    ToGrade = c.ToGrade
+                };
+            }
+        }
+
+        private static CalendarEvents GetCalendarEvents(CalendarEventsContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new CalendarEvents
+            {
+                DividendDate = GetShortenedValue(contract.DividendDate),
+                ExDividendDate = GetShortenedValue(contract.ExDividendDate),
+                MaxAge = contract.MaxAge,
+                Earnings = GetEarnings(contract.Earnings)
+            };
+        }
+
+        private static Earnings GetEarnings(EarningsContract contract)
+        {
+            return new Earnings
+            {
+                EarningsAverage = GetShortenedValue(contract.EarningsAverage),
+                EarningsDate = GetEarningsDate(contract.EarningsDate),
+                EarningsHigh = GetShortenedValue(contract.EarningsHigh),
+                EarningsLow = GetShortenedValue(contract.EarningsLow),
+                RevenueAverage = GetValue(contract.RevenueAverage),
+                RevenueHigh = GetValue(contract.RevenueHigh),
+                RevenueLow = GetValue(contract.RevenueLow)
+            };
+        }
+
+        private static IEnumerable<ShortenedValue> GetEarningsDate(ShortenedValueContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return GetShortenedValue(c);
+            }
+
+        }
+
+        private static InsiderHolders GetInsiderHolders(InsiderHoldersContract contract)
+        {
+            return new InsiderHolders
+            {
+                MaxAge = contract.MaxAge,
+                Holders = GetInsiderHolders(contract.Holders)
+            };
+        }
+
+        private static IEnumerable<Holder> GetInsiderHolders(HolderContract[] holders)
+        {
+            foreach (var c in holders)
+            {
+                yield return new Holder
+                {
+                    MaxAge = c.MaxAge,
+                    LatestTransDate = GetShortenedValue(c.LatestTransDate),
+                    Name = c.Name,
+                    PositionDirect = GetValue(c.PositionDirect),
+                    PositionDirectDate = GetShortenedValue(c.PositionDirectDate),
+                    Relation = c.Relation,
+                    TransactionDescription = c.TransactionDescription,
+                    Url = c.Url
                 };
             }
         }

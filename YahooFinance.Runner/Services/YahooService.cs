@@ -69,7 +69,9 @@ namespace YahooFinance.Runner.Services
 
         public async Task<FundamentalData> GetFundamentalDataAsync(string symbol, params string[] modules)
         {
-            var url = $"{symbol}?modules=assetProfile,recommendationTrend,cashflowStatementHistory,indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory,fundOwnership,summaryDetail";
+            var url = $"{symbol}?modules=assetProfile,recommendationTrend,cashflowStatementHistory,indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory,fundOwnership,summaryDetail" +
+                      $",insiderHolders" +
+                      $",calendarEvents,upgradeDowngradeHistory";
 
             var response = await HttpClientExtensions.GetV10Client(url);
 

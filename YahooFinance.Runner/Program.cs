@@ -64,6 +64,17 @@ namespace YahooFinance.Runner
                var fo = result.FundOwnership;
 
                var sd = result.SummaryDetail;
+
+               var sdd = result.InsiderHolders;
+
+               foreach (var sddHolder in sdd.Holders)
+               {
+                   
+               }
+
+               var sddd = result.CalendarEvents;
+
+               var ds = result.UpgradeDowngradeHistory;
            }
             Console.ReadLine();
         }

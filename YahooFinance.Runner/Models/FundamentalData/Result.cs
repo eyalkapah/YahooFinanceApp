@@ -20,11 +20,11 @@
 
         public SummaryDetail SummaryDetail { get; set; }
 
-        //public InsiderHoldersContract InsiderHolders { get; set; }
+        public InsiderHolders InsiderHolders { get; set; }
 
-        //public CalendarEventsContract CalendarEvents { get; set; }
+        public CalendarEvents CalendarEvents { get; set; }
 
-        //public UpgradeDowngradeHistoryContract UpgradeDowngradeHistory { get; set; }
+        public UpgradeDowngradeHistory UpgradeDowngradeHistory { get; set; }
 
         //public PriceContract Price { get; set; }
 
