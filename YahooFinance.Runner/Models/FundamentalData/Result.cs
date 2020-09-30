@@ -26,9 +26,9 @@
 
         public UpgradeDowngradeHistory UpgradeDowngradeHistory { get; set; }
 
-        //public PriceContract Price { get; set; }
+        public Price Price { get; set; }
 
-        //public BalanceSheetHistoryContract BalanceSheetHistory { get; set; }
+        public BalanceSheetHistory BalanceSheetHistory { get; set; }
 
         //public EarningsTrendContract EarningsTrend { get; set; }
 

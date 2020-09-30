@@ -42,9 +42,112 @@ namespace YahooFinance.Runner
                     SummaryDetail = GetSummaryDetail(resultContract.SummaryDetail),
                     InsiderHolders = GetInsiderHolders(resultContract.InsiderHolders),
                     CalendarEvents = GetCalendarEvents(resultContract.CalendarEvents),
-                    UpgradeDowngradeHistory = GetUpgradeDowngradeHistory(resultContract.UpgradeDowngradeHistory)
+                    UpgradeDowngradeHistory = GetUpgradeDowngradeHistory(resultContract.UpgradeDowngradeHistory),
+                    Price = GetPrice(resultContract.Price),
+                    BalanceSheetHistory = GetBalanceSheetHistory(resultContract.BalanceSheetHistory)
                 };
             }
+        }
+
+        private static BalanceSheetHistory GetBalanceSheetHistory(BalanceSheetHistoryContract contract)
+        {
+            return new BalanceSheetHistory
+            {
+                MaxAge = contract.MaxAge,
+                BalanceSheetStatements = GetBalanceSheetStatements(contract.BalanceSheetStatements)
+            };
+        }
+
+        private static IEnumerable<BalanceSheetStatement> GetBalanceSheetStatements(BalanceSheetStatementContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new BalanceSheetStatement
+                {
+                    AccountsPayable = GetValue(c.AccountsPayable),
+                    Cash = GetValue(c.Cash),
+                    CommonStock = GetValue(c.CommonStock),
+                    DeferredLongTermAssetCharges = GetValue(c.DeferredLongTermAssetCharges),
+                    EndDate = GetShortenedValue(c.EndDate),
+                    GoodWill = GetValue(c.GoodWill),
+                    IntangibleAssets = GetValue(c.IntangibleAssets),
+                    Inventory = GetValue(c.Inventory),
+                    LongTermDebt = GetValue(c.LongTermDebt),
+                    LongTermInvestments = GetValue(c.LongTermInvestments),
+                    MaxAge = c.MaxAge,
+                    NetReceivables = GetValue(c.NetReceivables),
+                    NetTangibleAssets = GetValue(c.NetTangibleAssets),
+                    OtherAssets = GetValue(c.OtherAssets),
+                    OtherCurrentAssets = GetValue(c.OtherCurrentAssets),
+                    OtherCurrentLiab = GetValue(c.OtherCurrentLiab),
+                    OtherLiab = GetValue(c.OtherLiab),
+                    OtherStockholderEquity = GetValue(c.OtherStockholderEquity),
+                    PropertyPlantEquipment = GetValue(c.PropertyPlantEquipment),
+                    RetainedEarnings = GetValue(c.RetainedEarnings),
+                    ShortLongTermDebt = GetValue(c.ShortLongTermDebt),
+                    ShortTermInvestments = GetValue(c.ShortTermInvestments),
+                    TotalAssets = GetValue(c.TotalAssets),
+                    TotalCurrentAssets = GetValue(c.TotalCurrentAssets),
+                    TotalCurrentLiabilities = GetValue(c.TotalCurrentLiabilities),
+                    TotalLiab = GetValue(c.TotalLiab),
+                    TotalStockholderEquity = GetValue(c.TotalStockholderEquity),
+                    TreasuryStock = GetValue(c.TreasuryStock)
+                };
+            }
+        }
+
+        private static Price GetPrice(PriceContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new Price
+            {
+                PriceHint = GetValue(contract.PriceHint),
+                RegularMarketPrice = GetShortenedValue(contract.RegularMarketPrice),
+                ExchangeName = contract.ExchangeName,
+                Symbol = contract.Symbol,
+                Currency = contract.Currency,
+                RegularMarketTime = contract.RegularMarketTime,
+                AverageDailyVolume10Day = GetValue(contract.AverageDailyVolume10Day),
+                AverageDailyVolume3Month = GetValue(contract.AverageDailyVolume3Month),
+                CirculatingSupply = GetStub<CirculatingSupply1Stub>(),
+                CurrencySymbol = contract.CurrencySymbol,
+                Exchange = contract.Exchange,
+                ExchangeDataDelayedBy = contract.ExchangeDataDelayedBy,
+                FromCurrency = contract.FromCurrency,
+                LastMarket = contract.LastMarket,
+                LongName = contract.LongName,
+                MarketCap = GetValue(contract.MarketCap),
+                MarketState = contract.MarketState,
+                MaxAge = contract.MaxAge,
+                OpenInterest = GetStub<OpenInterest1Stub>(),
+                PostMarketChange = GetShortenedValue(contract.PostMarketChange),
+                PostMarketChangePercent = GetShortenedValue(contract.PostMarketChangePercent),
+                PostMarketPrice = GetShortenedValue(contract.PostMarketPrice),
+                PostMarketSource = contract.PostMarketSource,
+                PostMarketTime = contract.PostMarketTime,
+                PreMarketChange = GetStub<PreMarketChangeStub>(),
+                PreMarketPrice = GetStub<PreMarketPriceStub>(),
+                PreMarketSource = contract.PreMarketSource,
+                QuoteSourceName = contract.QuoteSourceName,
+                QuoteType = contract.QuoteType,
+                RegularMarketChange = GetShortenedValue(contract.RegularMarketChange),
+                RegularMarketChangePercent = GetShortenedValue(contract.RegularMarketChangePercent),
+                RegularMarketDayHigh = GetShortenedValue(contract.RegularMarketDayHigh),
+                RegularMarketDayLow = GetShortenedValue(contract.RegularMarketDayLow),
+                RegularMarketOpen = GetShortenedValue(contract.RegularMarketOpen),
+                RegularMarketPreviousClose = GetShortenedValue(contract.RegularMarketPreviousClose),
+                RegularMarketSource = contract.RegularMarketSource,
+                RegularMarketVolume = GetValue(contract.RegularMarketVolume),
+                ShortName = contract.ShortName,
+                StrikePrice = GetStub<StrikePrice1Stub>(),
+                ToCurrency = contract.ToCurrency,
+                UnderlyingSymbol = contract.UnderlyingSymbol,
+                Volume24Hr = GetStub<Volume24Hr1Stub>(),
+                VolumeAllCurrencies = GetStub<VolumeAllCurrencies1Stub>()
+
+            };
         }
 
         private static UpgradeDowngradeHistory GetUpgradeDowngradeHistory(UpgradeDowngradeHistoryContract contract)
@@ -494,6 +597,9 @@ namespace YahooFinance.Runner
 
         public static ShortenedValue GetShortenedValue(ShortenedValueContract value)
         {
+            if (value == null)
+                return null;
+
             return new ShortenedValue
             {
                 Fmt = value.Fmt,
