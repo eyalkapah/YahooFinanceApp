@@ -71,7 +71,7 @@ namespace YahooFinance.Runner.Services
         {
             var url = $"{symbol}?modules=assetProfile,recommendationTrend,cashflowStatementHistory,indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory,fundOwnership,summaryDetail" +
                       $",insiderHolders" +
-                      $",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory";
+                      $",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory,earningsTrend,secFilings,institutionOwnership";
 
             var response = await HttpClientExtensions.GetV10Client(url);
 

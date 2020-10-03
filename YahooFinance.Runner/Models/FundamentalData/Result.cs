@@ -30,11 +30,11 @@
 
         public BalanceSheetHistory BalanceSheetHistory { get; set; }
 
-        //public EarningsTrendContract EarningsTrend { get; set; }
+        public EarningsTrend EarningsTrend { get; set; }
 
-        //public SecFilingsContract SecFilings { get; set; }
+        public SecFilings SecFilings { get; set; }
 
-        //public InstitutionOwnershipContract InstitutionOwnership { get; set; }
+        public InstitutionOwnership InstitutionOwnership { get; set; }
 
         //public MajorHoldersBreakdownContract MajorHoldersBreakdown { get; set; }
 

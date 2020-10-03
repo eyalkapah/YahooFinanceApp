@@ -44,9 +44,147 @@ namespace YahooFinance.Runner
                     CalendarEvents = GetCalendarEvents(resultContract.CalendarEvents),
                     UpgradeDowngradeHistory = GetUpgradeDowngradeHistory(resultContract.UpgradeDowngradeHistory),
                     Price = GetPrice(resultContract.Price),
-                    BalanceSheetHistory = GetBalanceSheetHistory(resultContract.BalanceSheetHistory)
+                    BalanceSheetHistory = GetBalanceSheetHistory(resultContract.BalanceSheetHistory),
+                    EarningsTrend = GetEarningsTrend(resultContract.EarningsTrend),
+                    SecFilings = GetSecFilings(resultContract.SecFilings),
+                    InstitutionOwnership = GetInstitutionOwnership(resultContract.InstitutionOwnership)
                 };
             }
+        }
+
+        private static InstitutionOwnership GetInstitutionOwnership(InstitutionOwnershipContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new InstitutionOwnership
+            {
+                MaxAge = contract.MaxAge,
+                OwnershipList = GetOwnershipList(contract.OwnershipList)
+            };
+        }
+
+        private static IEnumerable<OwnershipList1> GetOwnershipList(OwnershipList1Contract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new OwnershipList1
+                {
+                    MaxAge = c.MaxAge,
+                    Organization = c.Organization,
+                    PctHeld = GetShortenedValue(c.PctHeld),
+                    Position = GetValue(c.Position),
+                    ReportDate = GetShortenedValue(c.ReportDate),
+                    Value = GetValue(c.Value)
+                };
+            }
+        }
+
+        private static SecFilings GetSecFilings(SecFilingsContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new SecFilings
+            {
+                MaxAge = contract.MaxAge,
+                Filings = GetFilings(contract.Filings)
+            };
+        }
+
+        private static IEnumerable<Filing> GetFilings(FilingContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new Filing
+                {
+                    MaxAge = c.MaxAge,
+                    EpochDate = c.EpochDate,
+                    Date = c.Date,
+                    EdgarUrl = c.EdgarUrl,
+                    Title = c.Title,
+                    Type = c.Type
+                };
+            }
+        }
+
+        private static EarningsTrend GetEarningsTrend(EarningsTrendContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new EarningsTrend
+            {
+                MaxAge = contract.MaxAge,
+                Trend = GetTrends(contract.Trend)
+            };
+        }
+
+        private static IEnumerable<Trend1> GetTrends(Trend1Contract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new Trend1
+                {
+                    EndDate = c.EndDate,
+                    MaxAge = c.MaxAge,
+                    Period = c.Period,
+                    EarningsEstimate = GetEarningsEstimate(c.EarningsEstimate),
+                    Growth = GetShortenedValue(c.Growth),
+                    EpsRevisions = GetEpsRevisions(c.EpsRevisions),
+                    EpsTrend = GetEpsTrend(c.EpsTrend),
+                    RevenueEstimate = GetRevenueEstimate(c.RevenueEstimate)
+                };
+            }
+        }
+
+        private static RevenueEstimate GetRevenueEstimate(RevenueEstimateContract contract)
+        {
+            return new RevenueEstimate
+            {
+                High = GetValue(contract.High),
+                Low = GetValue(contract.Low),
+                Avg = GetValue(contract.Avg),
+                NumberOfAnalysts = GetValue(contract.NumberOfAnalysts),
+                YearAgoRevenue = GetValue(contract.YearAgoRevenue),
+                Growth = GetShortenedValue(contract.Growth)
+            };
+        }
+
+        private static EpsTrend GetEpsTrend(EpsTrendContract contract)
+        {
+            return new EpsTrend
+            {
+                Current = GetShortenedValue(contract.Current),
+                _30daysAgo = GetShortenedValue(contract._30daysAgo),
+                _60daysAgo = GetShortenedValue(contract._60daysAgo),
+                _7daysAgo = GetShortenedValue(contract._7daysAgo),
+                _90daysAgo = GetShortenedValue(contract._90daysAgo)
+            };
+        }
+
+        private static EpsRevisions GetEpsRevisions(EpsRevisionsContract contract)
+        {
+            return new EpsRevisions
+            {
+                DownLast30days = GetValue(contract.DownLast30days),
+                UpLast30days = GetValue(contract.UpLast30days),
+                UpLast7days = GetValue(contract.UpLast7days),
+                DownLast90days = GetStub<DownLast90days>()
+            };
+        }
+
+        private static EarningsEstimate GetEarningsEstimate(EarningsEstimateContract contract)
+        {
+            return new EarningsEstimate
+            {
+                Low = GetShortenedValue(contract.Low),
+                High = GetShortenedValue(contract.High),
+                Avg = GetShortenedValue(contract.Avg),
+                Growth = GetShortenedValue(contract.Growth),
+                NumberOfAnalysts = GetValue(contract.NumberOfAnalysts),
+                YearAgoEps = GetShortenedValue(contract.YearAgoEps)
+            };
         }
 
         private static BalanceSheetHistory GetBalanceSheetHistory(BalanceSheetHistoryContract contract)
