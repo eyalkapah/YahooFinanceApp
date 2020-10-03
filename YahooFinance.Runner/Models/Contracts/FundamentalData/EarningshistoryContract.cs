@@ -2,7 +2,7 @@
 
 namespace YahooFinance.Runner.Models.Contracts.FundamentalData
 {
-    public class EarningshistoryContract
+    public class EarningsHistoryContract
     {
         [JsonPropertyName("history")]
         public History1Contract[] History { get; set; }

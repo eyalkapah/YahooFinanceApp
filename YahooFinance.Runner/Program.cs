@@ -75,6 +75,13 @@ namespace YahooFinance.Runner
                var sddd = result.CalendarEvents;
 
                var ds = result.UpgradeDowngradeHistory;
+
+               var dd = result.BalanceSheetHistory;
+
+               foreach (var ddBalanceSheetStatement in dd.BalanceSheetStatements)
+               {
+                   
+               }
            }
             Console.ReadLine();
         }

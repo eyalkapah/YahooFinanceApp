@@ -62,7 +62,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public BalanceSheetHistoryQuarterlyContract BalanceSheetHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earningsHistory")]
-        public EarningshistoryContract EarningsHistory { get; set; }
+        public EarningsHistoryContract EarningsHistory { get; set; }
 
         [JsonPropertyName("majorDirectHolders")]
         public MajorDirectHoldersContract MajorDirectHolders { get; set; }

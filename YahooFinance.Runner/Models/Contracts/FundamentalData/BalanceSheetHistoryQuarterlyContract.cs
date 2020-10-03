@@ -5,7 +5,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
     public class BalanceSheetHistoryQuarterlyContract
     {
         [JsonPropertyName("balanceSheetStatements")]
-        public BalanceSheetStatement1Contract[] BalanceSheetStatements { get; set; }
+        public BalanceSheetStatementContract[] BalanceSheetStatements { get; set; }
 
         [JsonPropertyName("maxAge")]
         public int MaxAge { get; set; }

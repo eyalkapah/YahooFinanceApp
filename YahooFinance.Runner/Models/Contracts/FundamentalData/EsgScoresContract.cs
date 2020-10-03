@@ -26,7 +26,7 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public int RatingMonth { get; set; }
 
         [JsonPropertyName("highestControversy")]
-        public int HighestControversy { get; set; }
+        public object HighestControversy { get; set; }
 
         [JsonPropertyName("peerCount")]
         public int PeerCount { get; set; }

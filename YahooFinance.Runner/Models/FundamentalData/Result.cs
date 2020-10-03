@@ -36,15 +36,15 @@
 
         public InstitutionOwnership InstitutionOwnership { get; set; }
 
-        //public MajorHoldersBreakdownContract MajorHoldersBreakdown { get; set; }
+        public MajorHoldersBreakdown MajorHoldersBreakdown { get; set; }
 
-        //public BalanceSheetHistoryQuarterlyContract BalanceSheetHistoryQuarterly { get; set; }
+        public BalanceSheetHistoryQuarterly BalanceSheetHistoryQuarterly { get; set; }
 
-        //public EarningshistoryContract EarningsHistory { get; set; }
+        public EarningsHistory EarningsHistory { get; set; }
 
-        //public MajorDirectHoldersContract MajorDirectHolders { get; set; }
+        public MajorDirectHolders MajorDirectHolders { get; set; }
 
-        //public EsgScoresContract EsgScores { get; set; }
+        public EsgScores EsgScores { get; set; }
 
         //public SummaryProfileContract SummaryProfile { get; set; }
 

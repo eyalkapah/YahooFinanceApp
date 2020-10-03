@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using YahooFinance.Runner.Models.Contracts.FundamentalData;
 using YahooFinance.Runner.Models.FundamentalData;
 using YahooFinance.Runner.Models.FundamentalData.Stubs;
@@ -47,9 +48,127 @@ namespace YahooFinance.Runner
                     BalanceSheetHistory = GetBalanceSheetHistory(resultContract.BalanceSheetHistory),
                     EarningsTrend = GetEarningsTrend(resultContract.EarningsTrend),
                     SecFilings = GetSecFilings(resultContract.SecFilings),
-                    InstitutionOwnership = GetInstitutionOwnership(resultContract.InstitutionOwnership)
+                    InstitutionOwnership = GetInstitutionOwnership(resultContract.InstitutionOwnership),
+                    MajorHoldersBreakdown = GetMajorHoldersBreakdown(resultContract.MajorHoldersBreakdown),
+                    BalanceSheetHistoryQuarterly = GetBalanceSheetHistoryQuarterly(resultContract.BalanceSheetHistoryQuarterly),
+                    EarningsHistory = GetEarningsHistory(resultContract.EarningsHistory),
+                    MajorDirectHolders = GetMajorDirectHolders(resultContract.MajorDirectHolders),
+                    EsgScores = GetEsgScores(resultContract.EsgScores)
+
                 };
             }
+        }
+
+        private static EsgScores GetEsgScores(EsgScoresContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new EsgScores
+            {
+                MaxAge = contract.MaxAge,
+                Adult = contract.Adult,
+                Alcoholic = contract.Alcoholic,
+                AnimalTesting = contract.AnimalTesting,
+                Catholic = contract.Catholic,
+                Coal = contract.Coal,
+                ControversialWeapons = contract.ControversialWeapons,
+                EnvironmentPercentile = contract.EnvironmentPercentile,
+                EnvironmentScore = GetShortenedValue(contract.EnvironmentScore),
+                EsgPerformance = contract.EsgPerformance,
+                FurLeather = contract.FurLeather,
+                Gambling = contract.Gambling,
+                Gmo = contract.Gmo,
+                GovernancePercentile = contract.GovernancePercentile,
+                GovernanceScore = GetShortenedValue(contract.GovernanceScore),
+                HighestControversy = contract.HighestControversy,
+                MilitaryContract = contract.MilitaryContract,
+                Nuclear = contract.Nuclear,
+                PalmOil = contract.PalmOil,
+                PeerCount = contract.PeerCount,
+                PeerEnvironmentPerformance = GetValue(contract.PeerEnvironmentPerformance),
+                PeerEsgScorePerformance = GetValue(contract.PeerEsgScorePerformance),
+                PeerGovernancePerformance = GetValue(contract.PeerGovernancePerformance),
+                PeerGroup = contract.PeerGroup,
+                PeerHighestControversyPerformance = GetValue(contract.PeerHighestControversyPerformance),
+                PeerSocialPerformance = GetValue(contract.PeerSocialPerformance),
+                Percentile = GetShortenedValue(contract.Percentile),
+                Pesticides = contract.Pesticides,
+                RatingMonth = contract.RatingMonth,
+                RatingYear = contract.RatingYear,
+                RelatedControversy = contract.RelatedControversy,
+                SmallArms = contract.SmallArms,
+                SocialPercentile = contract.SocialPercentile,
+                SocialScore = GetShortenedValue(contract.SocialScore),
+                Tobacco = contract.Tobacco,
+                TotalEsg = GetShortenedValue(contract.TotalEsg)
+            };
+        }
+
+        private static MajorDirectHolders GetMajorDirectHolders(MajorDirectHoldersContract contract)
+        {
+            return new MajorDirectHolders
+            {
+                MaxAge = contract.MaxAge,
+                Holders = contract.Holders
+            };
+        }
+
+        private static EarningsHistory GetEarningsHistory(EarningsHistoryContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new EarningsHistory
+            {
+                MaxAge = contract.MaxAge,
+                History = GetHistory(contract.History)
+            };
+        }
+
+        private static IEnumerable<History1> GetHistory(History1Contract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new History1
+                {
+                    MaxAge = c.MaxAge,
+                    Period = c.Period,
+                    EpsActual = GetShortenedValue(c.EpsActual),
+                    EpsDifference = GetShortenedValue(c.EpsDifference),
+                    EpsEstimate = GetShortenedValue(c.EpsEstimate),
+                    Quarter = GetShortenedValue(c.Quarter),
+                    SurprisePercent = GetShortenedValue(c.SurprisePercent)
+                };
+            }
+        }
+
+        private static BalanceSheetHistoryQuarterly GetBalanceSheetHistoryQuarterly(BalanceSheetHistoryQuarterlyContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new BalanceSheetHistoryQuarterly
+            {
+                MaxAge = contract.MaxAge,
+                BalanceSheetStatements = GetBalanceSheetStatements(contract.BalanceSheetStatements)
+            };
+        }
+
+
+        private static MajorHoldersBreakdown GetMajorHoldersBreakdown(MajorHoldersBreakdownContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new MajorHoldersBreakdown
+            {
+                InsidersPercentHeld = GetShortenedValue(contract.InsidersPercentHeld),
+                InstitutionsFloatPercentHeld = GetShortenedValue(contract.InstitutionsFloatPercentHeld),
+                InstitutionsPercentHeld = GetShortenedValue(contract.InstitutionsPercentHeld),
+                InstitutionsCount = GetValue(contract.InstitutionsCount),
+                MaxAge = contract.MaxAge
+            };
         }
 
         private static InstitutionOwnership GetInstitutionOwnership(InstitutionOwnershipContract contract)
