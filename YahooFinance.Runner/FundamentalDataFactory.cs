@@ -53,10 +53,218 @@ namespace YahooFinance.Runner
                     BalanceSheetHistoryQuarterly = GetBalanceSheetHistoryQuarterly(resultContract.BalanceSheetHistoryQuarterly),
                     EarningsHistory = GetEarningsHistory(resultContract.EarningsHistory),
                     MajorDirectHolders = GetMajorDirectHolders(resultContract.MajorDirectHolders),
-                    EsgScores = GetEsgScores(resultContract.EsgScores)
+                    EsgScores = GetEsgScores(resultContract.EsgScores),
+                    SummaryProfile = GetSummaryProfile(resultContract.SummaryProfile),
+                    NetSharePurchaseActivity = GetNetSharePurchaseActivity(resultContract.NetSharePurchaseActivity),
+                    InsiderTransactions = GetInsiderTransactions(resultContract.InsiderTransactions),
+                    SectorTrend = GetSectorTrend(resultContract.SectorTrend),
+                    IncomeStatementHistoryQuarterly = GetIncomeStatementHistory(resultContract.IncomeStatementHistoryQuarterly),
+                    CashFlowStatementHistoryQuarterly = GetCashflowStatementHistory(resultContract.CashflowStatementHistoryQuarterly),
+                    Earnings = GetEarnings1(resultContract.Earnings),
+                    FinancialData = GetFinancialData(resultContract.FinancialData)
 
                 };
             }
+        }
+
+        private static FinancialData GetFinancialData(FinancialDataContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new FinancialData
+            {
+                MaxAge = contract.MaxAge,
+                FinancialCurrency = contract.FinancialCurrency,
+                Ebitda = GetValue(contract.Ebitda),
+                FreeCashflow = GetValue(contract.FreeCashflow),
+                GrossProfits = GetValue(contract.GrossProfits),
+                NumberOfAnalystOpinions = GetValue(contract.NumberOfAnalystOpinions),
+                OperatingCashflow = GetValue(contract.OperatingCashflow),
+                RecommendationKey = contract.RecommendationKey,
+                CurrentPrice = GetShortenedValue(contract.CurrentPrice),
+                CurrentRatio = GetShortenedValue(contract.CurrentRatio),
+                DebtToEquity = GetShortenedValue(contract.DebtToEquity),
+                EarningsGrowth = GetShortenedValue(contract.EarningsGrowth),
+                EbitdaMargins = GetShortenedValue(contract.EbitdaMargins),
+                GrossMargins = GetShortenedValue(contract.GrossMargins),
+                OperatingMargins = GetShortenedValue(contract.OperatingMargins),
+                ProfitMargins = GetShortenedValue(contract.ProfitMargins),
+                QuickRatio = GetShortenedValue(contract.QuickRatio),
+                RecommendationMean = GetShortenedValue(contract.RecommendationMean),
+                ReturnOnAssets = GetShortenedValue(contract.ReturnOnAssets),
+                ReturnOnEquity = GetShortenedValue(contract.ReturnOnEquity),
+                RevenueGrowth = GetShortenedValue(contract.RevenueGrowth),
+                RevenuePerShare = GetShortenedValue(contract.RevenuePerShare),
+                TargetHighPrice = GetShortenedValue(contract.TargetHighPrice),
+                TargetLowPrice = GetShortenedValue(contract.TargetLowPrice),
+                TargetMeanPrice = GetShortenedValue(contract.TargetMeanPrice),
+                TargetMedianPrice = GetShortenedValue(contract.TargetMedianPrice),
+                TotalCashPerShare = GetShortenedValue(contract.TotalCashPerShare),
+                TotalCash = GetValue(contract.TotalCash),
+                TotalDebt = GetValue(contract.TotalDebt),
+                TotalRevenue = GetValue(contract.TotalRevenue)
+            };
+        }
+
+        private static Earnings1 GetEarnings1(Earnings1Contract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new Earnings1
+            {
+                MaxAge = contract.MaxAge,
+                FinancialCurrency = contract.FinancialCurrency,
+                EarningsChart = GetEarningsChart(contract.EarningsChart),
+                FinancialsChart = GetFinancialsChart(contract.FinancialsChart)
+            };
+        }
+
+        private static FinancialsChart GetFinancialsChart(FinancialsChartContract contract)
+        {
+            return new FinancialsChart
+            {
+                Quarterly = GetQuarterly(contract.Quarterly),
+                Yearly = GetYearly(contract.Yearly)
+            };
+        }
+
+        private static IEnumerable<Yearly> GetYearly(YearlyContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new Yearly
+                {
+                    Date = c.Date,
+                    Earnings = GetValue(c.Earnings),
+                    Revenue = GetValue(c.Revenue)
+                };
+            }
+        }
+
+        private static IEnumerable<Quarterly1> GetQuarterly(Quarterly1Contract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new Quarterly1
+                {
+                    Date = c.Date,
+                    Earnings = GetValue(c.Earnings),
+                    Revenue = GetValue(c.Revenue)
+                };
+            }
+        }
+
+        private static EarningsChart GetEarningsChart(EarningsChartContract contract)
+        {
+            return new EarningsChart
+            {
+                CurrentQuarterEstimateYear = contract.CurrentQuarterEstimateYear,
+                CurrentQuarterEstimateDate = contract.CurrentQuarterEstimateDate,
+                CurrentQuarterEstimate = GetShortenedValue(contract.CurrentQuarterEstimate),
+                EarningsDate = GetShortenedValues(contract.EarningsDate)
+            };
+        }
+
+        private static IEnumerable<ShortenedValue> GetShortenedValues(ShortenedValueContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return GetShortenedValue(c);
+            }
+        }
+
+        private static SectorEnd GetSectorTrend(SectorEndContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new SectorEnd
+            {
+                MaxAge = contract.MaxAge,
+                Symbol = contract.Symbol,
+                Estimates = contract.Estimates,
+                PeRatio = GetStub<PeRatio2Stub>(),
+                PegRatio = GetStub<PegRatio3Stub>()
+            };
+        }
+
+        private static InsiderTransactions GetInsiderTransactions(InsiderTransactionsContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new InsiderTransactions
+            {
+                MaxAge = contract.MaxAge,
+                Transactions = GetTransactions(contract.Transactions)
+            };
+        }
+
+        private static IEnumerable<Transaction> GetTransactions(TransactionContract[] contract)
+        {
+            foreach (var c in contract)
+            {
+                yield return new Transaction
+                {
+                    MaxAge = c.MaxAge,
+                    FilerName = c.FilerName,
+                    FilerRelation = c.FilerRelation,
+                    FilerUrl = c.FilerUrl,
+                    MoneyText = c.MoneyText,
+                    Ownership = c.Ownership,
+                    TransactionText = c.TransactionText,
+                    Value = GetValue(c.Value),
+                    Shares = GetValue(c.Shares),
+                    StartDate = GetShortenedValue(c.StartDate)
+                };
+            }
+        }
+
+        private static NetSharePurchaseActivity GetNetSharePurchaseActivity(NetSharePurchaseActivityContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new NetSharePurchaseActivity
+            {
+                MaxAge = contract.MaxAge,
+                Period = contract.Period,
+                BuyInfoCount = GetValue(contract.BuyInfoCount),
+                BuyInfoShares = GetValue(contract.BuyInfoShares),
+                BuyPercentInsiderShares = GetShortenedValue(contract.BuyPercentInsiderShares),
+                NetInfoCount = GetValue(contract.NetInfoCount),
+                NetInfoShares = GetValue(contract.NetInfoShares),
+                NetPercentInsiderShares = GetShortenedValue(contract.NetPercentInsiderShares),
+                SellInfoCount = GetValue(contract.SellInfoCount),
+                SellInfoShares = GetValue(contract.SellInfoShares),
+                SellPercentInsiderShares = GetShortenedValue(contract.SellPercentInsiderShares),
+                TotalInsiderShares = GetValue(contract.TotalInsiderShares)
+            };
+        }
+
+        private static SummaryProfile GetSummaryProfile(SummaryProfileContract contract)
+        {
+            if (contract == null)
+                return null;
+
+            return new SummaryProfile
+            {
+                MaxAge = contract.MaxAge,
+                Address1 = contract.Address1,
+                City = contract.City,
+                CompanyOfficers = contract.CompanyOfficers,
+                Country = contract.Country,
+                FullTimeEmployees = contract.FullTimeEmployees,
+                Industry = contract.Industry,
+                LongBusinessSummary = contract.LongBusinessSummary,
+                Phone = contract.Phone,
+                Sector = contract.Sector,
+                State = contract.State,
+                Website = contract.Website,
+                Zip = contract.Zip
+            };
         }
 
         private static EsgScores GetEsgScores(EsgScoresContract contract)

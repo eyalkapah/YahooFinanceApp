@@ -80,13 +80,13 @@ namespace YahooFinance.Runner.Models.Contracts.FundamentalData
         public InsiderTransactionsContract InsiderTransactions { get; set; }
 
         [JsonPropertyName("sectorTrend")]
-        public SectortrEndContract SectorTrend { get; set; }
+        public SectorEndContract SectorTrend { get; set; }
 
         [JsonPropertyName("incomeStatementHistoryQuarterly")]
-        public IncomeStatementHistoryQuarterlyContract IncomeStatementHistoryQuarterly { get; set; }
+        public IncomeStatementHistoryContract IncomeStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("cashflowStatementHistoryQuarterly")]
-        public CashFlowStatementHistoryQuarterlyContract CashflowStatementHistoryQuarterly { get; set; }
+        public CashFlowStatementHistoryContract CashflowStatementHistoryQuarterly { get; set; }
 
         [JsonPropertyName("earnings")]
         public Earnings1Contract Earnings { get; set; }

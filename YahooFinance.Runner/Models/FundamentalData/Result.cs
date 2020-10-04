@@ -46,20 +46,20 @@
 
         public EsgScores EsgScores { get; set; }
 
-        //public SummaryProfileContract SummaryProfile { get; set; }
+        public SummaryProfile SummaryProfile { get; set; }
 
-        //public NetSharePurchaseActivityContract NetSharePurchaseActivity { get; set; }
+        public NetSharePurchaseActivity NetSharePurchaseActivity { get; set; }
 
-        //public InsiderTransactionsContract InsiderTransactions { get; set; }
+        public InsiderTransactions InsiderTransactions { get; set; }
 
-        //public SectortrEndContract SectorTrend { get; set; }
+        public SectorEnd SectorTrend { get; set; }
 
-        //public IncomeStatementHistoryQuarterlyContract IncomeStatementHistoryQuarterly { get; set; }
+        public IncomeStatementHistory IncomeStatementHistoryQuarterly { get; set; }
 
-        //public CashFlowStatementHistoryQuarterlyContract CashflowStatementHistoryQuarterly { get; set; }
+        public CashFlowStatementHistory CashFlowStatementHistoryQuarterly { get; set; }
 
-        //public Earnings1Contract Earnings { get; set; }
+        public Earnings1 Earnings { get; set; }
 
-        //public FinancialDataContract FinancialData { get; set; }
+        public FinancialData FinancialData { get; set; }
     }
 }

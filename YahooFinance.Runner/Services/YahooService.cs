@@ -76,7 +76,10 @@ namespace YahooFinance.Runner.Services
                 $",insiderHolders" +
                 $",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory" +
                 $",earningsTrend,secFilings,institutionOwnership" +
-                $",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores";
+                $",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores" +
+                $",summaryProfile,netSharePurchaseActivity,insiderTransactions" +
+                $",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
+                $",financialData";
 
                       var response = await HttpClientExtensions.GetV10Client(url);
 

@@ -2,7 +2,7 @@
 
 namespace YahooFinance.Runner.Models.Contracts.FundamentalData
 {
-    public class SectortrEndContract
+    public class SectorEndContract
     {
         [JsonPropertyName("maxAge")]
         public int MaxAge { get; set; }
