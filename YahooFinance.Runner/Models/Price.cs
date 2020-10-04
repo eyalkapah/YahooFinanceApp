@@ -11,5 +11,7 @@ namespace YahooFinance.Runner.Models
         public float Close { get; set; }
         public double Volume { get; set; }
         public float AdjClose { get; set; }
+        public float Dividends { get; set; }
+        public int StockSplits { get; set; }
     }
 }

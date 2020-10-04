@@ -9,9 +9,12 @@ namespace YahooFinance.Runner.Models.Contracts.HistoricalData
         public MetaContract Meta { get; set; }
 
         [JsonPropertyName("timestamp")]
-        public IEnumerable<int> Timestamp { get; set; }
+        public IEnumerable<long> Timestamp { get; set; }
 
         [JsonPropertyName("indicators")]
         public IndicatorsContract Indicators { get; set; }
+
+        [JsonPropertyName("events")]
+        public EventsContract Events { get; set; }
     }
 }

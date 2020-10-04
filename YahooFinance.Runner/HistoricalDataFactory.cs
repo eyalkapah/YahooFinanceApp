@@ -14,42 +14,45 @@ namespace YahooFinance.Runner
             return new HistoricalData
             {
                 Meta = GetMeta(historicalData.Meta),
-                Prices = GetPrices(historicalData.Timestamp, historicalData.Meta.Gmtoffset, historicalData.Indicators)
+                Prices = GetPrices(historicalData)
             };
         }
 
-        private static IEnumerable<Price> GetPrices(IEnumerable<int> timestamps,
-            int gmtoffset, IndicatorsContract indicators)
+        private static IEnumerable<Price> GetPrices(ResultContract result)
         {
-            var quote = indicators.Quote.First();
+            var quote = result.Indicators.Quote.First();
 
-            var enumerable = timestamps as int[] ?? timestamps.ToArray();
+            var enumerable = result.Timestamp as long[] ?? result.Timestamp.ToArray();
 
-            var adjClose = GetAdjClose(indicators.Adjclose.First()).ToArray();
+            var adjClose = GetAdjClose(result.Indicators.Adjclose.First()).ToArray();
 
             for (var i = 0; i < enumerable.Count(); i++)
             {
+                var timestamp = enumerable.ElementAt(i);
+
+                DividendContract dividend = null;
+                SplitContract split = null;
+
+                result.Events.Dividends?.TryGetValue(timestamp.ToString(), out dividend);
+                result.Events.Splits?.TryGetValue(timestamp.ToString(), out split);
 
                 yield return new Price
                 {
-                    StartTime = DateTimeExtensions.FromUnixTimeSeconds(enumerable.ElementAt(i) + gmtoffset),
+                    StartTime = DateTimeExtensions.FromUnixTimeSeconds(timestamp + result.Meta.Gmtoffset),
                     Open = quote.Open.ElementAt(i),
                     Close = quote.Close.ElementAt(i),
                     High = quote.High.ElementAt(i),
                     Low = quote.Low.ElementAt(i),
                     Volume = quote.Volume.ElementAt(i),
-                    AdjClose = adjClose.ElementAt(i)
+                    AdjClose = adjClose.ElementAt(i),
+                    Dividends = dividend?.Amount ?? 0,
+                    StockSplits = split?.Numerator ?? 0
                 };
             }
         }
 
-        private static IEnumerable<float> GetAdjClose(AdjcloseContract contract)
-        {
-            foreach (var adjcloseContract in contract.Adjclose)
-            {
-                yield return adjcloseContract;
-            }
-        }
+     
+        private static IEnumerable<float> GetAdjClose(AdjcloseContract contract) => contract.Adjclose;
 
         private static Meta GetMeta(MetaContract contract)
         {
@@ -99,42 +102,5 @@ namespace YahooFinance.Runner
                 }
             };
         }
-        //public static HistoricalData GetHistoricalData(this HistoricalDataContract contract)
-        //{
-        //    return new HistoricalData
-        //    {
-        //        Id = contract.Id,
-        //        Prices = GetPrices(contract.Prices),
-        //        EventsData = contract.EventsData,
-        //        FirstTradeDate = contract.FirstTradeDate,
-        //        IsPending = contract.IsPending,
-        //        TimeZone = GetTimeZone(contract.TimeZone)
-        //    };
-        //}
-
-        //private static Timezone GetTimeZone(TimezoneContract contractTimeZone)
-        //{
-        //    return new Timezone
-        //    {
-        //        GmtOffset = contractTimeZone.GmtOffset
-        //    };
-        //}
-
-        //private static IEnumerable<Price> GetPrices(PriceContract[] contractPrices)
-        //{
-        //    foreach (var contractPrice in contractPrices)
-        //    {
-        //        yield return new Price
-        //        {
-        //            Adjclose = contractPrice.Adjclose,
-        //            Close = contractPrice.Close,
-        //            Date = DateTimeExtensions.FromUnixTimeSeconds(contractPrice.Date),
-        //            High = contractPrice.High,
-        //            Low = contractPrice.Low,
-        //            Open = contractPrice.Open,
-        //            Volume = contractPrice.Volume
-        //        };
-        //    }
-        //}
     }
 }
