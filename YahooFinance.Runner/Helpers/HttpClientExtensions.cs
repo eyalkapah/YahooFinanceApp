@@ -57,5 +57,19 @@ namespace YahooFinance.Runner.Helpers
             return response;
         }
 
+        public static async Task<HttpResponseMessage> GetV7Client(string url)
+        {
+            using var client = new HttpClient
+            {
+                BaseAddress = new Uri("https://query2.finance.yahoo.com/v7/finance/options/")
+            };
+
+            var response = await client.GetAsync(url);
+
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
     }
 }

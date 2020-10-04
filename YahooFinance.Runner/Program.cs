@@ -23,66 +23,70 @@ namespace YahooFinance.Runner
            //    , "MSFT", true);
 
 
-           var fundamentalData = await yfService.GetFundamentalDataAsync("MSFT");
+           //var fundamentalData = await yfService.GetFundamentalDataAsync("MSFT");
 
-           foreach (var result in fundamentalData.QuoteSummary.Result)
-           {
-               //var assetProfile = result.AssetProfile;
+           //foreach (var result in fundamentalData.QuoteSummary.Result)
+           //{
+           //    //var assetProfile = result.AssetProfile;
 
-               //foreach (var assetProfileCompanyOfficer in assetProfile.CompanyOfficers)
-               //{
+           //    //foreach (var assetProfileCompanyOfficer in assetProfile.CompanyOfficers)
+           //    //{
                    
-               //}
+           //    //}
 
-               var recommendation = result.RecommendationTrend;
+           //    var recommendation = result.RecommendationTrend;
 
-               foreach (var trend in recommendation.Trend)
-               {
+           //    foreach (var trend in recommendation.Trend)
+           //    {
                    
-               }
+           //    }
 
-               var c = result.CashflowStatementHistory;
+           //    var c = result.CashflowStatementHistory;
 
-               foreach (var cCashFlowStatement in c.CashFlowStatements)
-               {
+           //    foreach (var cCashFlowStatement in c.CashFlowStatements)
+           //    {
                    
-               }
+           //    }
 
-               var i = result.IndexTrend;
+           //    var i = result.IndexTrend;
 
-               foreach (var iEstimate in i.Estimates)
-               {
+           //    foreach (var iEstimate in i.Estimates)
+           //    {
                    
-               }
+           //    }
 
-               var d = result.DefaultKeyStatistics;
+           //    var d = result.DefaultKeyStatistics;
 
-               var it = result.IndustryTrend;
+           //    var it = result.IndustryTrend;
 
-               var itt = result.IncomeStatementHistory;
+           //    var itt = result.IncomeStatementHistory;
 
-               var fo = result.FundOwnership;
+           //    var fo = result.FundOwnership;
 
-               var sd = result.SummaryDetail;
+           //    var sd = result.SummaryDetail;
 
-               var sdd = result.InsiderHolders;
+           //    var sdd = result.InsiderHolders;
 
-               foreach (var sddHolder in sdd.Holders)
-               {
+           //    foreach (var sddHolder in sdd.Holders)
+           //    {
                    
-               }
+           //    }
 
-               var sddd = result.CalendarEvents;
+           //    var sddd = result.CalendarEvents;
 
-               var ds = result.UpgradeDowngradeHistory;
+           //    var ds = result.UpgradeDowngradeHistory;
 
-               var dd = result.BalanceSheetHistory;
+           //    var dd = result.BalanceSheetHistory;
 
-               foreach (var ddBalanceSheetStatement in dd.BalanceSheetStatements)
-               {
+           //    foreach (var ddBalanceSheetStatement in dd.BalanceSheetStatements)
+           //    {
                    
-               }
-           }
+           //    }
+           //}
+
+           var options = await yfService.GetOptionsContractAsync("MSFT", DateTime.Now.AddDays(1));
+
+           
             Console.ReadLine();
         }
 

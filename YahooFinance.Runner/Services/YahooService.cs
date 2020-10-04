@@ -6,6 +6,7 @@ using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.Contracts.FundamentalData;
 using YahooFinance.Runner.Models.Contracts.HistoricalData;
+using YahooFinance.Runner.Models.Contracts.Options;
 using YahooFinance.Runner.Models.FundamentalData;
 
 namespace YahooFinance.Runner.Services
@@ -81,13 +82,38 @@ namespace YahooFinance.Runner.Services
                 $",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
                 $",financialData";
 
-                      var response = await HttpClientExtensions.GetV10Client(url);
+            var response = await HttpClientExtensions.GetV10Client(url);
 
             var json = await response.Content.ReadAsStringAsync();
 
             var contract = JsonSerializer.Deserialize<FundamentalDataContract>(json);
 
             return contract.GetFundamentalData();
+        }
+
+        public async Task<Models.Options.Options> GetOptionsContractAsync(string symbol, DateTime date)
+        {
+            var url = symbol;
+
+            var epochTime = decimal.MinValue;
+
+            if (date > DateTime.Now.Date)
+            {
+                epochTime = date.ToUnixTimeSeconds();
+            }
+
+            if (epochTime != long.MinValue)
+            {
+                url = $"{url}?date={epochTime}";
+            }
+
+            var response = await HttpClientExtensions.GetV7Client(url);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var contract = JsonSerializer.Deserialize<OptionsContract>(json);
+
+            return contract.GetOptions();
         }
     }
 }
