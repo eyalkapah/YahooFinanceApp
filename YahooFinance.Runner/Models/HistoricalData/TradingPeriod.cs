@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YahooFinance.Runner.Models
+namespace YahooFinance.Runner.Models.HistoricalData
 {
     public class TradingPeriod
     {

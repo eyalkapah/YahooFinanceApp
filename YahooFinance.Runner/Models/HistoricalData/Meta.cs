@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YahooFinance.Runner.Models.Contracts.HistoricalData;
 
-namespace YahooFinance.Runner.Models
+namespace YahooFinance.Runner.Models.HistoricalData
 {
     public class Meta
     {

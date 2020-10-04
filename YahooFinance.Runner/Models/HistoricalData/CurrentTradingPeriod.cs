@@ -1,6 +1,4 @@
-﻿using YahooFinance.Runner.Models.Contracts.HistoricalData;
-
-namespace YahooFinance.Runner.Models
+﻿namespace YahooFinance.Runner.Models.HistoricalData
 {
     public class CurrentTradingPeriod
     {

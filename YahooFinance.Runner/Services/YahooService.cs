@@ -8,6 +8,7 @@ using YahooFinance.Runner.Models.Contracts.FundamentalData;
 using YahooFinance.Runner.Models.Contracts.HistoricalData;
 using YahooFinance.Runner.Models.Contracts.Options;
 using YahooFinance.Runner.Models.FundamentalData;
+using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner.Services
 {

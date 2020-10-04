@@ -3,6 +3,7 @@ using System.Linq;
 using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.Contracts.HistoricalData;
+using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner
 {

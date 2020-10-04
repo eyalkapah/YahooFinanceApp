@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YahooFinance.Runner.Models
+namespace YahooFinance.Runner.Models.HistoricalData
 {
     public class HistoricalData
     {

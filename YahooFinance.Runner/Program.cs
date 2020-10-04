@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YahooFinance.Runner.Enums;
 using YahooFinance.Runner.Helpers;
+using YahooFinance.Runner.Models.HistoricalData;
 using YahooFinance.Runner.Services;
 
 namespace YahooFinance.Runner
@@ -85,16 +87,18 @@ namespace YahooFinance.Runner
            //    }
            //}
 
-           var hs = await yfService.GetHistoricalDataAsyncYahoo(Interval.OneDay, new DateTime(2010, 1, 1),
-               new DateTime(2020, 1, 1), "MSFT", true);
+           //var hs = await yfService.GetHistoricalDataAsyncYahoo(Interval.OneDay, new DateTime(2010, 1, 1),
+           //    new DateTime(2020, 1, 1), "MSFT", true);
 
 
-           await hs.Prices.WriteCsvAsync(@"c:\temp\MSFT.csv");
+           //await hs.Prices.WriteCsvAsync(@"c:\temp\MSFT.csv");
 
-           var options = await yfService.GetOptionsContractAsync("MSFT", DateTime.Now.AddDays(1));
+           //var options = await yfService.GetOptionsContractAsync("MSFT", DateTime.Now.AddDays(1));
 
 
-           
+           var prices = new List<Price>();
+
+           await prices.ReadCsvAsync(@"C:\Temp\MSFT.csv");
             Console.ReadLine();
         }
 
