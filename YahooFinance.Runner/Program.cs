@@ -105,12 +105,11 @@ namespace YahooFinance.Runner
 
             //var calcReturn = ((msftPrices.Last().Close - msftPrices.First().Open) / msftPrices.First().Open) * 100;
 
-            var list = yfService.CalculateReturnsAsync(new[] {"MSFT", "AAPL"}, 30);
+            var list = await yfService.CalculateReturnsAsync(new[] {"MSFT", "AAPL"}, 30);
 
-            await foreach (var l in list)
-            {
-                
-            }
+            var sorted = list.Sort();
+
+            var avg = list.Average();
             //list.GroupBy(c => symbol)
 
             //var prices = await yfService.GetHistoricalDataAsync(symbol, 30);
