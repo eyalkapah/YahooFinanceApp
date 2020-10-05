@@ -5,6 +5,7 @@ namespace YahooFinance.Runner.Models.HistoricalData
     public class Price
     {
         public DateTime StartTime { get; set; }
+        public string Symbol { get; set; }
         public float Open { get; set; }
         public float Low { get; set; }
         public float High { get; set; }

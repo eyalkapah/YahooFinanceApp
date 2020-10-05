@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner.Helpers
@@ -16,11 +14,11 @@ namespace YahooFinance.Runner.Helpers
         {
             var csv = new StringBuilder();
 
-            csv.AppendLine("Date,Open,High,Low,Close,Volume,Dividends,Stock Splits");
+            csv.AppendLine("Date,Symbol,Open,High,Low,Close,Volume,Dividends,Stock Splits");
 
             foreach (var p in prices)
             {
-                csv.AppendLine($"{p.StartTime:yyyy-MM-dd},{p.Open},{p.High},{p.Low},{p.Close},{p.Volume},{p.Dividends},{p.StockSplits}");
+                csv.AppendLine($"{p.StartTime:yyyy-MM-dd},{p.Symbol},{p.Open},{p.High},{p.Low},{p.Close},{p.Volume},{p.Dividends},{p.StockSplits}");
             }
 
             await File.WriteAllTextAsync(filePath, csv.ToString());
@@ -37,13 +35,14 @@ namespace YahooFinance.Runner.Helpers
                 var lineSplit = line.Split(',');
 
                 DateTime.TryParse(lineSplit[0], out var date);
-                var open = lineSplit[1];
-                var high = lineSplit[2];
-                var low = lineSplit[3];
-                var close = lineSplit[4];
-                var volume = lineSplit[5];
-                var dividends = lineSplit[6];
-                var splits = lineSplit[7];
+                var symbol = lineSplit[1];
+                var open = lineSplit[2];
+                var high = lineSplit[3];
+                var low = lineSplit[4];
+                var close = lineSplit[5];
+                var volume = lineSplit[6];
+                var dividends = lineSplit[7];
+                var splits = lineSplit[8];
 
                 prices.Add(new Price
                 {

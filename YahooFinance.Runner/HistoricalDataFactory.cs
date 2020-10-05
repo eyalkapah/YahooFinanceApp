@@ -25,7 +25,7 @@ namespace YahooFinance.Runner
 
             var enumerable = result.Timestamp as long[] ?? result.Timestamp.ToArray();
 
-            var adjClose = GetAdjClose(result.Indicators.Adjclose.First()).ToArray();
+            //var adjClose = GetAdjClose(result.Indicators.Adjclose.First()).ToArray();
 
             for (var i = 0; i < enumerable.Count(); i++)
             {
@@ -40,12 +40,13 @@ namespace YahooFinance.Runner
                 yield return new Price
                 {
                     StartTime = DateTimeExtensions.FromUnixTimeSeconds(timestamp + result.Meta.Gmtoffset),
+                    Symbol = result.Meta.Symbol,
                     Open = quote.Open.ElementAt(i),
                     Close = quote.Close.ElementAt(i),
                     High = quote.High.ElementAt(i),
                     Low = quote.Low.ElementAt(i),
                     Volume = quote.Volume.ElementAt(i),
-                    AdjClose = adjClose.ElementAt(i),
+                    //AdjClose = adjClose.ElementAt(i),
                     Dividends = dividend?.Amount ?? 0,
                     StockSplits = split?.Numerator ?? 0
                 };

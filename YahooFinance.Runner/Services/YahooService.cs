@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using YahooFinance.Runner.Enums;
@@ -9,33 +11,51 @@ using YahooFinance.Runner.Models.Contracts.HistoricalData;
 using YahooFinance.Runner.Models.Contracts.Options;
 using YahooFinance.Runner.Models.FundamentalData;
 using YahooFinance.Runner.Models.HistoricalData;
+using Price = YahooFinance.Runner.Models.HistoricalData.Price;
 
 namespace YahooFinance.Runner.Services
 {
     public class YahooService
     {
-        //public async Task<HistoricalData> GetHistoricalDataAsync(Frequency frequency, DateTime startTime,
-        //    DateTime endTime, string symbol)
-        //{
-        //    var yfStartTime = startTime.ToUnixTimeSeconds();
-        //    var yfEndTimeEpoch = endTime.ToUnixTimeSeconds();
-        //    var yfFrequency = frequency.GetFrequencyString();
 
-        //    var url =
-        //        $"?frequency={yfFrequency}" +
-        //        "&filter=history" +
-        //        $"&period1={yfStartTime}" +
-        //        $"&period2={yfEndTimeEpoch}" +
-        //        $"&symbol={symbol}";
+        public async IAsyncEnumerable<Returns> CalculateReturnsAsync(string[] symbols, int numOfDays)
+        {
+            var data = await GetHistoricalDataAsync(symbols, numOfDays);
 
-        //    var response = await HttpClientExtensions.HttpGetClient(url);
+            var groupedList = data.GroupBy(c => c.Symbol);
 
-        //    var json = await response.Content.ReadAsStringAsync();
+            foreach (var grouped in groupedList)
+            {
+                yield return new Returns
+                {
+                    Symbol = grouped.Key,
+                    ReturnPercentage =
+                        Math.Round(((grouped.Last().Close - grouped.First().Open) / grouped.First().Open) * 100, 2)
+                };
+            }
+        }
 
-        //    var contract = JsonSerializer.Deserialize<HistoricalDataContract>(json);
+        public async Task<IEnumerable<Price>> GetHistoricalDataAsync(string[] symbols, int numOfDays)
+        {
+            var list = new List<Price>();
 
-        //    return contract.GetHistoricalData();
-        //}
+            foreach (var symbol in symbols)
+            {
+                var entries = await GetHistoricalDataAsync(symbol, numOfDays);
+
+                list.AddRange(entries);
+            }
+
+            return list;
+        }
+
+        public async Task<IEnumerable<Price>> GetHistoricalDataAsync(string symbol, int numOfDays)
+        {
+            var result = await GetHistoricalDataAsyncYahoo(Interval.OneDay, DateTime.Now.AddDays(-2 * numOfDays),
+                DateTime.Now, symbol, true);
+
+            return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
+        }
 
         public async Task<HistoricalData> GetHistoricalDataAsyncYahoo(Interval frequency, DateTime startTime,
             DateTime endTime, string symbol, bool includePrePost)

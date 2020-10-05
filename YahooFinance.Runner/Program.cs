@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YahooFinance.Runner.Enums;
 using YahooFinance.Runner.Helpers;
+using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.HistoricalData;
 using YahooFinance.Runner.Services;
 
@@ -14,6 +16,10 @@ namespace YahooFinance.Runner
         static async Task Main(string[] args)
         {
            var yfService = new YahooService();
+
+           var symbol = "MSFT";
+
+
 
            //var result = await yfService.GetHistoricalDataAsync(Frequency.OneDay
            //    , new DateTime(2020, 9, 1, 12, 0, 0)
@@ -95,13 +101,29 @@ namespace YahooFinance.Runner
 
            //var options = await yfService.GetOptionsContractAsync("MSFT", DateTime.Now.AddDays(1));
 
+           //var msftPrices = await yfService.GetHistoricalDataAsync("MSFT", 30);
 
-           var prices = new List<Price>();
+            //var calcReturn = ((msftPrices.Last().Close - msftPrices.First().Open) / msftPrices.First().Open) * 100;
 
-           await prices.ReadCsvAsync(@"C:\Temp\MSFT.csv");
-            Console.ReadLine();
+            var list = yfService.CalculateReturnsAsync(new[] {"MSFT", "AAPL"}, 30);
+
+            await foreach (var l in list)
+            {
+                
+            }
+            //list.GroupBy(c => symbol)
+
+            //var prices = await yfService.GetHistoricalDataAsync(symbol, 30);
+
+            //await prices.ToList().ReadCsvAsync(@"C:\Temp\MSFT.csv");
+            // Console.ReadLine();
+
+
         }
 
-     
+        private static double CalculateReturn(IGrouping<string, Price> grouped)
+        {
+            return Math.Round(((grouped.Last().Close - grouped.First().Open) / grouped.First().Open) * 100,2);
+        }
     }
 }
