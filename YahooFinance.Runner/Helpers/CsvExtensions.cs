@@ -107,6 +107,11 @@ namespace YahooFinance.Runner.Helpers
         private static void AddPrice(ICollection<Price> prices, DateTime date, string symbol, string open, string high, string low,
             string close, string volume, string dividends, string splits)
         {
+            if (string.IsNullOrWhiteSpace(symbol) || string.IsNullOrWhiteSpace(open) ||
+                string.IsNullOrWhiteSpace(high) || string.IsNullOrWhiteSpace(low)
+                || string.IsNullOrWhiteSpace(close) || string.IsNullOrWhiteSpace(volume))
+                return;
+
             prices.Add(new Price
             {
                 StartTime = date,

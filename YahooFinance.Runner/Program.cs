@@ -129,6 +129,14 @@ namespace YahooFinance.Runner
                 {"volume", "Volume"},
                 {"Name", "Symbol"}
             });
+
+            var momentum = prices.CalculateMomentum(new DateTime(2017, 1, 1), 50);
+
+            var stockNames = prices.GetStockNames();
+
+            var returns = prices.CalculateReturns();
+
+            var orderedReturns = returns.OrderBy(c => c.ReturnPercentage);
         }
 
         private static double CalculateReturn(IGrouping<string, Price> grouped)

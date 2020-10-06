@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YahooFinance.Runner.Models;
 
@@ -20,8 +21,10 @@ namespace YahooFinance.Runner.Helpers
             if (!enumerable.Any())
                 return 0;
 
-            return enumerable.Sum(c => c.ReturnPercentage) /
-                enumerable.Count();
+            return Math.Round(enumerable.Sum(c => c.ReturnPercentage) /
+                enumerable.Count(),2);
         }
+
+
     }
 }
