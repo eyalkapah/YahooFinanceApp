@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.HistoricalData;
 
@@ -58,6 +59,11 @@ namespace YahooFinance.Runner.Helpers
                 StocksToBuy = stocksToBuy,
                 StocksToBuyAverage = selectedStocksAverage
             };
+        }
+
+        public static Task SlidingWindow(this IEnumerable<Price> prices, DateTime cutTime, int slidingInterval)
+        {
+
         }
     }
 }
