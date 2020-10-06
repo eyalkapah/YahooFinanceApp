@@ -117,7 +117,18 @@ namespace YahooFinance.Runner
             //await prices.ToList().ReadCsvAsync(@"C:\Temp\MSFT.csv");
             // Console.ReadLine();
 
+            var prices = new List<Price>();
 
+            await prices.ReadCsvAsync("Data\\all_stocks_5yr.csv", new Dictionary<string, string>
+            {
+                {"date", "StartTime"},
+                {"open", "Open"},
+                {"high", "High"},
+                {"low", "Low"},
+                {"close", "Close"},
+                {"volume", "Volume"},
+                {"Name", "Symbol"}
+            });
         }
 
         private static double CalculateReturn(IGrouping<string, Price> grouped)
