@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner.Helpers
@@ -11,59 +9,25 @@ namespace YahooFinance.Runner.Helpers
     {
         public static IEnumerable<string> GetStockNames(this IEnumerable<Price> prices) => prices.Select(p => p.Symbol).Distinct();
 
-        public static IEnumerable<Returns> CalculateReturns(this IEnumerable<Price> prices)
+        public static List<Price> SortByStartTime(this IEnumerable<Price> prices, bool ascending = true)
         {
-            var groupedList = prices.GroupBy(c => c.Symbol);
-
-            var list = new List<Returns>();
-
-            foreach (var grouped in groupedList)
-            {
-                list.Add(new Returns
-                {
-                    Symbol = grouped.Key,
-                    StartTime = grouped.First().StartTime,
-                    EndTime = grouped.Last().StartTime,
-                    ReturnPercentage =
-                        Math.Round(((grouped.Last().Close - grouped.First().Open) / grouped.First().Open) * 100, 2)
-                });
-            }
-
-            return list;
+            return ascending
+                ? prices.OrderBy(c => c.StartTime).ToList()
+                : prices.OrderByDescending(c => c.StartTime).ToList();
         }
 
-        public static MomentumDetail CalculateMomentum(this IEnumerable<Price> prices, DateTime cutTime, int numOfStocks)
-        {
-            if (numOfStocks > prices.Count())
-                throw new ArgumentException("numOfStocks must be either equal or smaller than total price count");
+        public static List<Price> TrimUntil(this IEnumerable<Price> prices, DateTime cutDate) =>
+            prices.Where(c => c.StartTime <= cutDate).ToList();
 
-            prices = prices.OrderBy(c => c.StartTime);
+        public static List<Price> TrimFrom(this IEnumerable<Price> prices, DateTime cutDate) =>
+            prices.Where(c => c.StartTime > cutDate).ToList();
 
-            var trainPrices = prices.Where(c => c.StartTime < cutTime);
+        public static IEnumerable<string> ConcatStockNames(this List<Price> list1, List<Price> list2)
+            => list1.GetStockNames().Concat(list2.GetStockNames()).Distinct();
 
-            var trainReturns = trainPrices.CalculateReturns();
+        public static int DaysCount(this List<Price> prices) => (prices.Last().StartTime - prices.First().StartTime).Days;
 
-            var testPrices = prices.Where(c => c.StartTime > cutTime);
-
-            var testReturns = testPrices.CalculateReturns();
-
-            var stocksToBuy = trainReturns.OrderByDescending(c => c.ReturnPercentage).Take(numOfStocks).Select(c => c.Symbol);
-
-            var selectedStocksAverage = testReturns.Where(c => stocksToBuy.Contains(c.Symbol)).Average();
-
-            return new MomentumDetail
-            {
-                AllSymbols = trainPrices.GetStockNames().Concat(testPrices.GetStockNames()).Distinct(),
-                TrainAverage = trainReturns.Average(),
-                TestAverage = testReturns.Average(),
-                StocksToBuy = stocksToBuy,
-                StocksToBuyAverage = selectedStocksAverage
-            };
-        }
-
-        public static Task SlidingWindow(this IEnumerable<Price> prices, DateTime cutTime, int slidingInterval)
-        {
-
-        }
+        public static List<Price> BetweenDates(this List<Price> prices, DateTime startTime, DateTime endTime)
+            => prices.Where(c => c.StartTime >= startTime && c.StartTime <= endTime).ToList();
     }
 }

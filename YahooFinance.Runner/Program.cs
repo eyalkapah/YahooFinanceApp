@@ -130,13 +130,15 @@ namespace YahooFinance.Runner
                 {"Name", "Symbol"}
             });
 
-            var momentum = prices.CalculateMomentum(new DateTime(2017, 1, 1), 50);
+            //var momentum = prices.CalculateMomentum(new DateTime(2017, 1, 1), 50);
 
-            var stockNames = prices.GetStockNames();
+            //var stockNames = prices.GetStockNames();
 
-            var returns = prices.CalculateReturns();
+            //var returns = prices.CalculateReturns();
 
-            var orderedReturns = returns.OrderBy(c => c.ReturnPercentage);
+            //var orderedReturns = returns.OrderBy(c => c.ReturnPercentage);
+
+            var m = prices.SlidingWindow(500, 300, 50);
         }
 
         private static double CalculateReturn(IGrouping<string, Price> grouped)

@@ -18,22 +18,22 @@ namespace YahooFinance.Runner.Services
     public class YahooService
     {
 
-        public async Task<IEnumerable<Returns>> CalculateReturnsAsync(string[] symbols, int numOfDays)
+        public async Task<IEnumerable<Profit>> CalculateReturnsAsync(string[] symbols, int numOfDays)
         {
             var data = await GetHistoricalDataAsync(symbols, numOfDays);
 
             var groupedList = data.GroupBy(c => c.Symbol);
 
-            var list = new List<Returns>();
+            var list = new List<Profit>();
 
             foreach (var grouped in groupedList)
             {
-                list.Add(new Returns
+                list.Add(new Profit
                 {
                     Symbol = grouped.Key,
                     StartTime = grouped.First().StartTime,
                     EndTime = grouped.Last().StartTime,
-                    ReturnPercentage =
+                    ProfitPercentage =
                         Math.Round(((grouped.Last().Close - grouped.First().Open) / grouped.First().Open) * 100, 2)
                 });
             }

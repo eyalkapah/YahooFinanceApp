@@ -2,7 +2,7 @@
 
 namespace YahooFinance.Runner.Models
 {
-    public class Returns
+    public class Profit
     {
         public string Symbol { get; set; }
 
@@ -10,6 +10,6 @@ namespace YahooFinance.Runner.Models
 
         public DateTime EndTime { get; set; }
 
-        public double ReturnPercentage { get; set; }
+        public double ProfitPercentage { get; set; }
     }
 }
