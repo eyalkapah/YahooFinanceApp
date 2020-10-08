@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YahooFinance.Runner.Models.Contracts.Options;
+using AutoTrader.Yahoo.API.Contracts.Options;
 using YahooFinance.Runner.Models.Options;
 
 namespace YahooFinance.Runner

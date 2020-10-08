@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoTrader.Yahoo.API.Contracts.HistoricalData;
 using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
-using YahooFinance.Runner.Models.Contracts.HistoricalData;
 using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using YahooFinance.Runner.Models.Contracts.FundamentalData;
+using AutoTrader.Yahoo.API.Contracts.FundamentalData;
 using YahooFinance.Runner.Models.FundamentalData;
 using YahooFinance.Runner.Models.FundamentalData.Stubs;
 

@@ -15,4 +15,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AutoTrader.Yahoo.API;
+using AutoTrader.Yahoo.API.Contracts.FundamentalData;
+using AutoTrader.Yahoo.API.Contracts.HistoricalData;
+using AutoTrader.Yahoo.API.Contracts.Options;
 using YahooFinance.Runner.Enums;
 using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
-using YahooFinance.Runner.Models.Contracts.FundamentalData;
-using YahooFinance.Runner.Models.Contracts.HistoricalData;
-using YahooFinance.Runner.Models.Contracts.Options;
 using YahooFinance.Runner.Models.FundamentalData;
 using YahooFinance.Runner.Models.HistoricalData;
 using Price = YahooFinance.Runner.Models.HistoricalData.Price;
@@ -17,6 +18,12 @@ namespace YahooFinance.Runner.Services.API
 {
     public class YahooService
     {
+        private YahooClient _client;
+
+        public YahooService()
+        {
+            _client = new YahooClient();
+        }
 
         public async Task<IEnumerable<Profit>> CalculateReturnsAsync(string[] symbols, int numOfDays)
         {
@@ -85,7 +92,7 @@ namespace YahooFinance.Runner.Services.API
             //    $"&period2={yfEndTimeEpoch}" +
             //    $"&symbol={symbol}";
 
-            var response = await HttpClientExtensions.HttpGetClientYahoo(url);
+            var response = await _client.HttpGetClientYahoo(url);
 
             var json = await response.Content.ReadAsStringAsync();
 
@@ -109,7 +116,7 @@ namespace YahooFinance.Runner.Services.API
                 $",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
                 $",financialData";
 
-            var response = await HttpClientExtensions.GetV10Client(url);
+            var response = await _client.GetV10Client(url);
 
             var json = await response.Content.ReadAsStringAsync();
 
@@ -134,7 +141,7 @@ namespace YahooFinance.Runner.Services.API
                 url = $"{url}?date={epochTime}";
             }
 
-            var response = await HttpClientExtensions.GetV7Client(url);
+            var response = await _client.GetV7Client(url);
 
             var json = await response.Content.ReadAsStringAsync();
 
