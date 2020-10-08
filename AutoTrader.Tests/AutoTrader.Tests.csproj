@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YahooFinance.Runner\YahooFinance.Runner.csproj" />
+    <ProjectReference Include="..\AutoTrader.Runner\AutoTrader.Runner.csproj" />
+    <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
   </ItemGroup>
 
 </Project>
