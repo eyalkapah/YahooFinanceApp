@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YahooFinance.Runner.Helpers;
-using YahooFinance.Runner.Models.HistoricalData;
-using YahooFinance.Runner.Services;
+using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Runner.Services;
 
 namespace AutoTrader.Tests
 {

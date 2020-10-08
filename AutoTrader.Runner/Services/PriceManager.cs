@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YahooFinance.Runner.Helpers;
-using YahooFinance.Runner.Models;
-using YahooFinance.Runner.Models.HistoricalData;
+using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Models;
+using AutoTrader.Models.Models.HistoricalData;
 
-namespace YahooFinance.Runner.Services
+namespace AutoTrader.Runner.Services
 {
     public class PriceManager
     {

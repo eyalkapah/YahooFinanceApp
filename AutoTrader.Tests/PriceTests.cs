@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Models.HistoricalData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using YahooFinance.Runner.Helpers;
-using YahooFinance.Runner.Models.HistoricalData;
 
 namespace AutoTrader.Tests
 {

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using YahooFinance.Runner.Enums;
-using YahooFinance.Runner.Models;
-using YahooFinance.Runner.Models.HistoricalData;
-using YahooFinance.Runner.Services.API;
+using AutoTrader.Models.Enums;
+using AutoTrader.Models.Interfaces;
+using AutoTrader.Models.Models;
+using AutoTrader.Models.Models.HistoricalData;
 
-namespace YahooFinance.Runner.Services
+namespace AutoTrader.Runner.Services
 {
     public class TickerManager
     {
-        private readonly YahooService _service;
+        private readonly IStockDataService _service;
 
-        public TickerManager(YahooService service)
+        public TickerManager(IStockDataService service)
         {
             _service = service;
         }
@@ -23,7 +22,7 @@ namespace YahooFinance.Runner.Services
         {
             var symbol = ticker.Symbol;
 
-            var result = await _service.GetHistoricalDataAsyncYahoo(Interval.OneDay,
+            var result = await _service.GetHistoricalDataAsync(Interval.OneDay,
                 DateTime.Now.AddDays(-2 * numOfDays),
                 DateTime.Now, symbol, true);
 

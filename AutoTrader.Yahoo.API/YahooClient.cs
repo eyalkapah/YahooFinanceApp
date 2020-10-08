@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AutoTrader.Models.Interfaces;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AutoTrader.Yahoo.API
 {
-    public class YahooClient
+    public class YahooClient 
     {
         private const string OptionsUrl = "https://query2.finance.yahoo.com/v7/finance/options/";
         private const string QuoteSummaryUrl = "https://query1.finance.yahoo.com/v10/finance/quoteSummary/";
