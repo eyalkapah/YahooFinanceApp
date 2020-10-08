@@ -16,16 +16,24 @@ namespace YahooFinance.Runner.Helpers
                 : prices.OrderByDescending(c => c.StartTime).ToList();
         }
 
-        public static List<Price> TrimUntil(this IEnumerable<Price> prices, DateTime cutDate) =>
-            prices.Where(c => c.StartTime <= cutDate).ToList();
+        public static List<Price> TrimUntil(this IEnumerable<Price> prices, DateTime cutDate, bool includeEqual = false) 
+            => includeEqual 
+                ? prices.Where(c => c.StartTime <= cutDate).ToList() 
+                : prices.Where(c => c.StartTime < cutDate).ToList();
 
-        public static List<Price> TrimFrom(this IEnumerable<Price> prices, DateTime cutDate) =>
-            prices.Where(c => c.StartTime > cutDate).ToList();
+        public static List<Price> TrimFrom(this IEnumerable<Price> prices, DateTime cutDate, bool includeEqual = false)
+            => includeEqual
+                ? prices.Where(c => c.StartTime >= cutDate).ToList()
+                : prices.Where(c => c.StartTime > cutDate).ToList();
 
         public static IEnumerable<string> ConcatStockNames(this List<Price> list1, List<Price> list2)
             => list1.GetStockNames().Concat(list2.GetStockNames()).Distinct();
 
-        public static int DaysCount(this List<Price> prices) => (prices.Last().StartTime - prices.First().StartTime).Days;
+        public static int DaysCount(this List<Price> prices)
+        {
+            prices = prices.SortByStartTime();
+            return (prices.Last().StartTime - prices.First().StartTime).Days;
+        } 
 
         public static List<Price> BetweenDates(this List<Price> prices, DateTime startTime, DateTime endTime)
             => prices.Where(c => c.StartTime >= startTime && c.StartTime <= endTime).ToList();

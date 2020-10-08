@@ -33,7 +33,7 @@ namespace YahooFinance.Runner.Services
             if (numOfStocks > GetStockNames(prices).Count())
                 throw new ArgumentException("numOfStocks cannot be bigger than total stock number");
 
-            var trainPeriod = prices.TrimUntil(cutTime);
+            var trainPeriod = prices.TrimUntil(cutTime, true);
 
             var trainProfits = CalculateProfits(trainPeriod);
 

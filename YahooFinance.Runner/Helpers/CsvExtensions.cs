@@ -24,11 +24,13 @@ namespace YahooFinance.Runner.Helpers
             await File.WriteAllTextAsync(filePath, csv.ToString());
         }
 
-        public static async Task ReadCsvAsync(this List<Price> prices, string filePath, Dictionary<string, string> map)
+        public static async Task<List<Price>> ReadCsvAsync(string filePath, Dictionary<string, string> map)
         {
             var lines = await File.ReadAllLinesAsync(filePath);
 
             var headers = lines[0].Split(',');
+
+            var prices = new List<Price>();
 
             foreach (var line in lines.Skip(1))
             {
@@ -44,7 +46,7 @@ namespace YahooFinance.Runner.Helpers
                 string dividends = default;
                 string splits = default;
 
-                for (int i = 0; i < lineSplit.Length; i++)
+                for (var i = 0; i < lineSplit.Length; i++)
                 {
                     if (headers.Length < i)
                         continue;
@@ -78,6 +80,8 @@ namespace YahooFinance.Runner.Helpers
 
                 AddPrice(prices, date, symbol, open, high, low, close, volume, dividends, splits);
             }
+
+            return prices;
         }
 
         public static async Task ReadCsvAsync(this List<Price> prices, string filePath)
