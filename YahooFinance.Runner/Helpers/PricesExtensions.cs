@@ -37,5 +37,8 @@ namespace YahooFinance.Runner.Helpers
 
         public static List<Price> BetweenDates(this List<Price> prices, DateTime startTime, DateTime endTime)
             => prices.Where(c => c.StartTime >= startTime && c.StartTime <= endTime).ToList();
+
+        public static IEnumerable<IGrouping<string, Price>> GroupByStock(this IEnumerable<Price> prices) =>
+            prices.GroupBy(c => c.Symbol);
     }
 }

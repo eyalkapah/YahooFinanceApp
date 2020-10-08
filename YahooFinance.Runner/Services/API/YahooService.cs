@@ -13,7 +13,7 @@ using YahooFinance.Runner.Models.FundamentalData;
 using YahooFinance.Runner.Models.HistoricalData;
 using Price = YahooFinance.Runner.Models.HistoricalData.Price;
 
-namespace YahooFinance.Runner.Services
+namespace YahooFinance.Runner.Services.API
 {
     public class YahooService
     {

@@ -7,6 +7,7 @@ using YahooFinance.Runner.Helpers;
 using YahooFinance.Runner.Models;
 using YahooFinance.Runner.Models.HistoricalData;
 using YahooFinance.Runner.Services;
+using YahooFinance.Runner.Services.API;
 
 namespace YahooFinance.Runner
 {

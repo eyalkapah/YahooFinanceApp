@@ -7,14 +7,12 @@ using YahooFinance.Runner.Models.HistoricalData;
 
 namespace YahooFinance.Runner.Services
 {
-    public class PriceService
+    public class PriceManager
     {
-        public static IEnumerable<string> GetStockNames(IEnumerable<Price> prices) => prices.Select(p => p.Symbol).Distinct();
-
-        public static List<Profit> CalculateProfits(IEnumerable<Price> prices)
+        public List<Profit> CalculateProfits(IEnumerable<Price> prices)
         {
             // Group all prices by symbol
-            var groupedList = prices.GroupBy(c => c.Symbol);
+            var groupedList = prices.GroupByStock();
 
             // Calculate profit for each symbol
             return groupedList.Select(grouped => new Profit
@@ -26,11 +24,11 @@ namespace YahooFinance.Runner.Services
             }).ToList();
         }
 
-        public static MomentumDetail CalculateMomentum(List<Price> prices, DateTime cutTime, int numOfStocks)
+        public MomentumDetail CalculateMomentum(List<Price> prices, DateTime cutTime, int numOfStocks)
         {
             prices = prices.SortByStartTime();
 
-            if (numOfStocks > GetStockNames(prices).Count())
+            if (numOfStocks > prices.GetStockNames().Count())
                 throw new ArgumentException("numOfStocks cannot be bigger than total stock number");
 
             var trainPeriod = prices.TrimUntil(cutTime, true);
@@ -55,7 +53,7 @@ namespace YahooFinance.Runner.Services
             };
         }
 
-        public static List<MomentumDetail> SlidingWindow(List<Price> prices, int trainDays, int testDays, int numOfStocks)
+        public List<MomentumDetail> SlidingWindow(List<Price> prices, int trainDays, int testDays, int numOfStocks)
         {
             if (trainDays <= 0)
                 throw new ArgumentException("trainDays must be positive");

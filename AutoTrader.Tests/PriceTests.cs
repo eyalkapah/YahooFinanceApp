@@ -11,12 +11,11 @@ namespace AutoTrader.Tests
     public class PriceTests
     {
         private List<Price> _prices;
-        private const string DataAllStocksYrCsv = "Data\\all_stocks_5yr.csv";
 
         [TestInitialize]
         public void Initialize()
         {
-            _prices = CsvExtensions.ReadCsvAsync(DataAllStocksYrCsv, new Dictionary<string, string>
+            _prices = CsvExtensions.ReadCsvAsync(Constants.DataAllStocks5YrCsv, new Dictionary<string, string>
             {
                 {"date", "StartTime"},
                 {"open", "Open"},
@@ -107,6 +106,15 @@ namespace AutoTrader.Tests
             var prices = _prices.BetweenDates(DateTime.Parse(inStartTime), DateTime.Parse(inEndTime));
 
             Assert.AreEqual(prices.Count, outItemsCount, "Days count between dates don't match");
+        }
+
+        [DataTestMethod]
+        [DataRow(505)]
+        public void GroupByStockTest(int outStockCount)
+        {
+            var group = _prices.GroupByStock();
+
+            Assert.AreEqual(group.Count(), outStockCount, "stock count doesn't match");
         }
 
     }
