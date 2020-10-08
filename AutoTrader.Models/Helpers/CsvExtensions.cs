@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
 
 namespace AutoTrader.Models.Helpers
@@ -22,6 +23,57 @@ namespace AutoTrader.Models.Helpers
             }
 
             await File.WriteAllTextAsync(filePath, csv.ToString());
+        }
+
+        public static async Task<List<Ticker>> ReadConstituentsAsync(string filePath, Dictionary<string, string> map)
+        {
+            var lines = await File.ReadAllLinesAsync(filePath);
+
+            var headers = lines[0].Split(',');
+
+            var tickers = new List<Ticker>();
+
+            foreach (var line in lines.Skip(1))
+            {
+                var lineSplit = line.Split(',');
+
+                var symbol = string.Empty;
+                var name = string.Empty;
+                var sector = string.Empty;
+
+                for (var i = 0; i < lineSplit.Length; i++)
+                {
+                    
+                    if (headers.Length < i)
+                        continue;
+
+                    var header = headers[i];
+
+                    map.TryGetValue(header, out var key);
+
+                    if (string.IsNullOrEmpty(key))
+                        continue;
+
+                    
+                    if (key.Equals("Symbol"))
+                        symbol = lineSplit[i];
+                    else if (key.Equals("Name"))
+                        name = lineSplit[i];
+                    else if (key.Equals("Sector"))
+                        sector = lineSplit[i];
+                }
+
+                if (!string.IsNullOrEmpty(symbol))
+                {
+                    tickers.Add(new Ticker(symbol)
+                    {
+                        Name = name,
+                        Sector = sector
+                    });
+                }
+            }
+
+            return tickers;
         }
 
         public static async Task<List<Price>> ReadCsvAsync(string filePath, Dictionary<string, string> map)
