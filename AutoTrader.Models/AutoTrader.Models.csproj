@@ -6,14 +6,14 @@
 
   <ItemGroup>
     <None Remove="Data\all_stocks_5yr.csv" />
-    <None Remove="Data\constituents_csv.csv" />
+    <None Remove="Data\constituents.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Data\all_stocks_5yr.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\constituents_csv.csv">
+    <Content Include="Data\constituents.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

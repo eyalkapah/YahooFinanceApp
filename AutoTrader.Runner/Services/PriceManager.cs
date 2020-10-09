@@ -21,7 +21,7 @@ namespace AutoTrader.Runner.Services
                 StartTime = grouped.First().StartTime,
                 EndTime = grouped.Last().StartTime,
                 ProfitPercentage = grouped.CalculateProfitPercentage()
-            }).ToList();
+            }).OrderBy(c => c.Symbol).ToList();
         }
 
         public MomentumDetail CalculateMomentum(List<Price> prices, DateTime cutTime, int numOfStocks)

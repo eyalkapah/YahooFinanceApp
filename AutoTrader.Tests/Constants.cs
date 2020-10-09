@@ -4,6 +4,6 @@
     {
         public const string DataAllStocks5YrCsv = "Data\\all_stocks_5yr.csv";
 
-        public const string DataConstituentsCsv = "Data\\constituents_csv.csv";
+        public const string DataConstituentsCsv = "Data\\constituents.csv";
     }
 }

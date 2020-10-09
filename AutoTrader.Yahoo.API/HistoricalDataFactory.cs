@@ -33,8 +33,8 @@ namespace AutoTrader.Yahoo.API
                 DividendContract dividend = null;
                 SplitContract split = null;
 
-                result.Events.Dividends?.TryGetValue(timestamp.ToString(), out dividend);
-                result.Events.Splits?.TryGetValue(timestamp.ToString(), out split);
+                result.Events?.Dividends?.TryGetValue(timestamp.ToString(), out dividend);
+                result.Events?.Splits?.TryGetValue(timestamp.ToString(), out split);
 
                 yield return new Price
                 {
