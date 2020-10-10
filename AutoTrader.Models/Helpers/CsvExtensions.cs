@@ -130,15 +130,15 @@ namespace AutoTrader.Models.Helpers
                         splits = lineSplit[i];
                 }
 
-                AddPrice(prices, date, symbol, open, high, low, close, volume, dividends, splits);
+                prices.AddPrice(date, symbol, open, high, low, close, volume, dividends, splits);
             }
 
             return prices;
         }
 
-        public static async Task ReadCsvAsync(this List<Price> prices, string filePath)
+        public static async Task<List<Price>> ReadCsvAsync(string filePath)
         {
-            //var json = await File.ReadAllTextAsync(filePath);
+            var prices = new List<Price>();
 
             var lines = await File.ReadAllLinesAsync(filePath);
 
@@ -156,30 +156,12 @@ namespace AutoTrader.Models.Helpers
                 var dividends = lineSplit[7];
                 var splits = lineSplit[8];
 
-                AddPrice(prices, date, symbol, open, high, low, close, volume, dividends, splits);
+                prices.AddPrice(date, symbol, open, high, low, close, volume, dividends, splits);
             }
+
+            return prices;
         }
 
-        private static void AddPrice(ICollection<Price> prices, DateTime date, string symbol, string open, string high, string low,
-            string close, string volume, string dividends, string splits)
-        {
-            if (string.IsNullOrWhiteSpace(symbol) || string.IsNullOrWhiteSpace(open) ||
-                string.IsNullOrWhiteSpace(high) || string.IsNullOrWhiteSpace(low)
-                || string.IsNullOrWhiteSpace(close) || string.IsNullOrWhiteSpace(volume))
-                return;
 
-            prices.Add(new Price
-            {
-                StartTime = date,
-                Symbol = symbol,
-                Open = Convert.ToSingle(open),
-                High = Convert.ToSingle(high),
-                Low = Convert.ToSingle(low),
-                Close = Convert.ToSingle(close),
-                Volume = Convert.ToDouble(volume),
-                Dividends = Convert.ToSingle(dividends),
-                StockSplits = Convert.ToInt32(splits)
-            });
-        }
     }
 }
