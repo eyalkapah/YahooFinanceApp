@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
-    <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
+    <Compile Remove="Services\API\**" />
+    <EmbeddedResource Remove="Services\API\**" />
+    <None Remove="Services\API\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\API\" />
+    <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
+    <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
   </ItemGroup>
 
 </Project>

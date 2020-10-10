@@ -11,5 +11,7 @@ namespace AutoTrader.Models.Models
         public DateTime EndTime { get; set; }
 
         public double ProfitPercentage { get; set; }
+
+        public int Rank { get; set; }
     }
 }
