@@ -15,13 +15,24 @@ namespace AutoTrader.Runner.Services
             var groupedList = prices.GroupByStock();
 
             // Calculate profit for each symbol
-            return groupedList.Select(grouped => new Profit
+            var profits = groupedList.Select(grouped => new Profit
             {
                 Symbol = grouped.Key,
                 StartTime = grouped.First().StartTime,
                 EndTime = grouped.Last().StartTime,
                 ProfitPercentage = grouped.CalculateProfitPercentage()
-            }).OrderBy(c => c.Symbol).ToList();
+            }).OrderBy(c => c.ProfitPercentage).ToList();
+
+            var levelCount = 5;
+
+            var divider = profits.Count / levelCount;
+
+            for (var i = 0; i < profits.Count; i++)
+            {
+                profits[i].Rank = Convert.ToInt32(i / divider);
+            }
+
+            return profits.OrderBy(c => c.Symbol).ToList();
         }
 
         public MomentumDetail CalculateMomentum(List<Price> prices, DateTime cutTime, int numOfStocks)
