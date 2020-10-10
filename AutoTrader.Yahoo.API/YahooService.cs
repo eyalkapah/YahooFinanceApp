@@ -66,14 +66,14 @@ namespace AutoTrader.Yahoo.API
 
         public async Task<IEnumerable<Price>> GetHistoricalDataAsync(string symbol, int numOfDays)
         {
-            var result = await GetHistoricalDataAsync(Interval.OneDay, DateTime.Now.AddDays(-2 * numOfDays),
-                DateTime.Now, symbol, true);
+            var result = await GetHistoricalDataAsync(symbol, Interval.OneDay, DateTime.Now.AddDays(-2 * numOfDays),
+                DateTime.Now, true);
 
             return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
         }
 
-        public async Task<HistoricalData> GetHistoricalDataAsync(Interval frequency, DateTime startTime,
-            DateTime endTime, string symbol, bool includePrePost)
+        public async Task<HistoricalData> GetHistoricalDataAsync(string symbol, Interval frequency, DateTime startTime,
+            DateTime endTime, bool includePrePost)
         {
             var yStartTime = startTime.ToUnixTimeSeconds();
             var yEndTimeEpoch = endTime.ToUnixTimeSeconds();

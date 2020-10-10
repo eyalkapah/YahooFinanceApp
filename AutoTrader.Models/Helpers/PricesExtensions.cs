@@ -40,5 +40,27 @@ namespace AutoTrader.Models.Helpers
 
         public static IEnumerable<IGrouping<string, Price>> GroupByStock(this IEnumerable<Price> prices) =>
             prices.GroupBy(c => c.Symbol);
+
+        public static void AddPrice(this ICollection<Price> prices, DateTime date, string symbol, string open, string high, string low,
+            string close, string volume, string dividends, string splits)
+        {
+            if (string.IsNullOrWhiteSpace(symbol) || string.IsNullOrWhiteSpace(open) ||
+                string.IsNullOrWhiteSpace(high) || string.IsNullOrWhiteSpace(low)
+                || string.IsNullOrWhiteSpace(close) || string.IsNullOrWhiteSpace(volume))
+                return;
+
+            prices.Add(new Price
+            {
+                StartTime = date,
+                Symbol = symbol,
+                Open = Convert.ToSingle(open),
+                High = Convert.ToSingle(high),
+                Low = Convert.ToSingle(low),
+                Close = Convert.ToSingle(close),
+                Volume = Convert.ToDouble(volume),
+                Dividends = Convert.ToSingle(dividends),
+                StockSplits = Convert.ToInt32(splits)
+            });
+        }
     }
 }
