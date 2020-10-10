@@ -17,8 +17,12 @@ namespace AutoTrader.Models.Interfaces
         Task<IEnumerable<Price>> GetHistoricalDataAsync(string[] symbols, int numOfDays);
         Task<IEnumerable<Price>> GetHistoricalDataAsync(string symbol, int numOfDays);
 
-        Task<HistoricalData> GetHistoricalDataAsync(Interval frequency, DateTime startTime,
-            DateTime endTime, string symbol, bool includePrePost);
+        Task<HistoricalData> GetHistoricalDataAsync(
+            string symbol,
+            DateTime startTime,
+            DateTime endTime,
+            Interval frequency,
+            bool includePrePost);
 
         Task<FundamentalData> GetFundamentalDataAsync(string symbol, params string[] modules);
         Task<Options> GetOptionsContractAsync(string symbol, DateTime date);

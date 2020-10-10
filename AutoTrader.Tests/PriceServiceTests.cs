@@ -17,7 +17,7 @@ namespace AutoTrader.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _service = new PriceManager();
+            _service = new PriceManager(null);
 
             _prices = CsvExtensions.ReadCsvAsync(Constants.DataAllStocks5YrCsv, new Dictionary<string, string>
             {

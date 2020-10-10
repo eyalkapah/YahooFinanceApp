@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
+using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
@@ -22,11 +23,12 @@ namespace AutoTrader.Runner.Services
         {
             try
             {
-                var symbol = ticker.Symbol;
-
-                var result = await _service.GetHistoricalDataAsync(Interval.OneDay,
+                var result = await _service.GetHistoricalDataAsync(
+                    ticker.Symbol,
                     DateTime.Now.AddDays(-2 * numOfDays),
-                    DateTime.Now, symbol, true);
+                    DateTime.Now,
+                    Interval.OneDay,
+                    true);
 
                 return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
             }
@@ -36,5 +38,7 @@ namespace AutoTrader.Runner.Services
                 return null;
             }
         }
+
+        public Ticker GetTickerBySymbol(IEnumerable<Ticker> tickers, string symbol) => tickers.GetBySymbol(symbol);
     }
 }

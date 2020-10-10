@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
 
@@ -9,6 +12,29 @@ namespace AutoTrader.Runner.Services
 {
     public class PriceManager
     {
+        private readonly IStockDataService _service;
+
+        public PriceManager(IStockDataService service)
+        {
+            _service = service;
+        }
+        public async Task<List<Price>> GetPricesAsync(
+            Ticker ticker, 
+            DateTime startTime, 
+            DateTime endTime, 
+            Interval frequency,
+            bool includePrePost)
+        {
+            var history = await _service.GetHistoricalDataAsync(
+                    ticker.Symbol, 
+                    startTime, 
+                    endTime, 
+                    frequency, 
+                    includePrePost);
+
+            return history.Prices.ToList();
+        }
+
         public List<Profit> CalculateProfits(IEnumerable<Price> prices)
         {
             // Group all prices by symbol
@@ -97,6 +123,40 @@ namespace AutoTrader.Runner.Services
             }
 
             return momentumList;
+        }
+
+        public List<FocusPoint> CalculateSupportPoints(List<Price> prices, double offsetPercent)
+        {
+            var potentials = new List<Price>();
+
+            for (var i = 0; i < prices.Count - 1; i++)
+            {
+                if (i == 0)
+                    continue;
+
+                var yesterday = prices[i - 1].Close;
+                var today = prices[i].Close;
+                var tomorrow = prices[i + 1].Close;
+
+                if (yesterday > today && today < tomorrow)
+                    potentials.Add(prices[i]);
+            }
+
+            var limitPoints = potentials.Select(p => new FocusPoint(p, offsetPercent)).ToList();
+
+            foreach (var limitPoint in limitPoints)
+            {
+                foreach (var potential in potentials.Where(c => c.StartTime < limitPoint.CurrentPrice.StartTime))
+                {
+                    if (limitPoint.CurrentPrice.StartTime == potential.StartTime)
+                        continue;
+
+                    if (potential.Close > limitPoint.LowerZone && potential.Close < limitPoint.UpperZone)
+                        limitPoint.Prices.Add(potential);
+                }
+            }
+
+            return limitPoints;
         }
     }
 }
