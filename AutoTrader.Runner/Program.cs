@@ -19,7 +19,9 @@ namespace AutoTrader.Runner
         {
             IStockDataService yahooService = new YahooService();
 
-            var tickerManager = new TickerManager(yahooService);
+            var priceManager = new PriceManager(yahooService);
+
+            var tickerManager = new TickerManager(yahooService, priceManager);
 
             var tickers = CsvExtensions.ReadConstituentsAsync("Data\\constituents.csv", new Dictionary<string, string>
             {
@@ -28,7 +30,7 @@ namespace AutoTrader.Runner
                 {"Sector", "Sector"},
             }).Result;
 
-            var priceManager = new PriceManager(yahooService);
+            
 
             var msftTicker = tickerManager.GetTickerBySymbol(tickers, "MSFT");
 
@@ -40,9 +42,10 @@ namespace AutoTrader.Runner
                 false);
 
             
-            var offsetPercent = 1;
+            var offsetPercent = 0.5;
 
-            var supportPoints = priceManager.CalculateSupportPoints(prices, offsetPercent);
+            var supportPoints = priceManager.CalculateExtremePoints(prices, ExtremaType.Minimum, offsetPercent);
+            var rejectPoints = priceManager.CalculateExtremePoints(prices, ExtremaType.Maximum, offsetPercent);
 
         }
     }

@@ -3,26 +3,29 @@ using System.Collections.Generic;
 
 namespace AutoTrader.Models.Models
 {
-    public class FocusPoint
+    public class Extrema
     {
         private readonly double _offsetPercent;
-        
+
         public List<Price> Prices { get; set; }
         public Price CurrentPrice { get; set; }
 
         public double Offset => CurrentPrice.Close * _offsetPercent / 100;
-        public double UpperZone => CurrentPrice.Close + Offset;
-        public double LowerZone => CurrentPrice.Close - Offset;
+        public double UpperZone { get; set; }
+        public double LowerZone { get; set; }
 
         // C'tor
         //
-        public FocusPoint(Price currentPrice, double offsetPercent)
+        public Extrema(Price currentPrice, double offsetPercent)
         {
             Prices = new List<Price>();
 
             _offsetPercent = offsetPercent;
 
             CurrentPrice = currentPrice;
+
+            UpperZone = CurrentPrice.Close + Offset;
+            LowerZone = CurrentPrice.Close - Offset;
         }
     }
 }

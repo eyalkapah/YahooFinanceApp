@@ -62,5 +62,7 @@ namespace AutoTrader.Models.Helpers
                 StockSplits = Convert.ToInt32(splits)
             });
         }
+
+
     }
 }

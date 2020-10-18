@@ -48,7 +48,12 @@ namespace AutoTrader.Runner.Services
             {
                 var symbol = ticker.Symbol;
 
-                var result = await _service.GetHistoricalDataAsync(symbol, frequency, startTime, DateTime.MaxValue, includePrePost);
+                var result = await _service.GetHistoricalDataAsync(
+                    symbol, 
+                    startTime, 
+                    DateTime.MaxValue,
+                    frequency,
+                    includePrePost);
 
                 return result;
             }
@@ -97,6 +102,6 @@ namespace AutoTrader.Runner.Services
             }
         }
 
-        
+        public Ticker GetTickerBySymbol(IEnumerable<Ticker> tickers, string symbol) => tickers.GetBySymbol(symbol);
     }
 }

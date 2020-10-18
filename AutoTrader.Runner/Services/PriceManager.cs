@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
@@ -19,17 +20,17 @@ namespace AutoTrader.Runner.Services
             _service = service;
         }
         public async Task<List<Price>> GetPricesAsync(
-            Ticker ticker, 
-            DateTime startTime, 
-            DateTime endTime, 
+            Ticker ticker,
+            DateTime startTime,
+            DateTime endTime,
             Interval frequency,
             bool includePrePost)
         {
             var history = await _service.GetHistoricalDataAsync(
-                    ticker.Symbol, 
-                    startTime, 
-                    endTime, 
-                    frequency, 
+                    ticker.Symbol,
+                    startTime,
+                    endTime,
+                    frequency,
                     includePrePost);
 
             return history.Prices.ToList();
@@ -125,10 +126,144 @@ namespace AutoTrader.Runner.Services
             return momentumList;
         }
 
-        public List<FocusPoint> CalculateSupportPoints(List<Price> prices, double offsetPercent)
+        public List<ExtremaPoint> CalculateExtremePoints(List<Price> prices, ExtremaType extremePoint, double offsetPercent)
         {
             var potentials = new List<Price>();
 
+            // Get extreme points
+            var extremePoints = GetExtremePoints(prices, extremePoint, offsetPercent, potentials);
+
+
+            foreach (var extrema in extremePoints)
+            {
+                foreach (var potential in potentials.Where(c => c.StartTime < extrema.CurrentPrice.StartTime))
+                {
+                    if (extrema.CurrentPrice.StartTime == potential.StartTime)
+                        continue;
+
+                    if (potential.Close.IsBetween(extrema.LowerZone, extrema.UpperZone))
+                        extrema.Prices.Add(potential);
+                }
+            }
+
+            extremePoints = extremePoints.Where(c => c.Prices.Any()).ToList();
+
+            var list = new List<ExtremaPoint>();
+            var pointsToKeep = new HashSet<DateTime>();
+            var pointsToCheck = new Dictionary<DateTime, LinkedList<DateTime>>();
+
+            foreach (var extrema in extremePoints)
+            {
+                pointsToCheck[extrema.CurrentPrice.StartTime] = new LinkedList<DateTime>(extrema.Prices.Select(p => p.StartTime));
+            }
+
+            // Merge points
+            foreach (var (startTime, childrenOfB) in pointsToCheck.Reverse())
+            {
+                if (!pointsToKeep.Any())
+                    pointsToKeep.Add(startTime);
+                else
+                {
+                    var pointsWithB = extremePoints.Where(c => c.Prices.Any(c => c.StartTime == startTime));
+
+                    var shouldInclude = true;
+
+                    foreach (var extrema in pointsWithB)
+                    {
+                        if (!shouldInclude)
+                            break;
+
+                        if (!pointsToKeep.Contains(extrema.CurrentPrice.StartTime))
+                            continue;
+
+                        var isIncluded = IsIncluded(childrenOfB, extrema);
+
+                        if (isIncluded)
+                            shouldInclude = false;
+                    }
+
+                    if (shouldInclude)
+                        pointsToKeep.Add(startTime);
+                }
+            }
+
+            var l = extremePoints.Where(c => pointsToKeep.Contains(c.CurrentPrice.StartTime)).ToList();
+
+
+            foreach (var extrema in l)
+            {
+                prices = extrema.Prices.Concat(new List<Price> { extrema.CurrentPrice }).ToList();
+                var min = prices.Select(c => c.Close).Min();
+                var max = prices.Select(c => c.Close).Max();
+
+                list.Add(new ExtremaPoint
+                {
+                    Prices = prices,
+                    Min = min,
+                    Max = max,
+                    Avg = (min + max) / 2
+                });
+            }
+
+            foreach (var p in list)
+            {
+                Debug.WriteLine($"Min: {p.Min}");
+                Debug.WriteLine($"Max: {p.Max}");
+                Debug.WriteLine($"Avg: {p.Avg}");
+
+                foreach (var pPrice in p.Prices)
+                {
+                    Debug.WriteLine($"\t{pPrice.StartTime}");
+                }
+            }
+
+            list.Reverse();
+
+            var newList = new List<ExtremaPoint>();
+            var containedIds = new List<Guid>();
+
+            foreach (var pl in list)
+            {
+                var avg = pl.Avg;
+                var offset = (avg * offsetPercent / 100);
+
+                var upperLimit = avg + offset;
+                var lowerLimit = avg - offset;
+
+                var extremePointsInOffset = list.Where(c => c.Avg > lowerLimit && c.Avg < upperLimit).ToList();
+
+                if (extremePointsInOffset.Count() == 1 && containedIds.Contains(extremePointsInOffset.First().Id))
+                    continue;
+                else
+                {
+                    containedIds.AddRange(extremePointsInOffset.Select(c => c.Id));
+
+                    var priceList = new HashSet<Price>();
+
+                    foreach (var extremaPoint in extremePointsInOffset)
+                    {
+                        foreach (var extremaPointPrice in extremaPoint.Prices)
+                        {
+                            if (priceList.All(c => c.StartTime != extremaPointPrice.StartTime))
+                                priceList.Add(extremaPointPrice);
+                        }
+                    }
+
+                    newList.Add(new ExtremaPoint
+                    {
+                        Avg = extremePointsInOffset.Sum(c => c.Avg) / extremePointsInOffset.Count,
+                        Min = extremePointsInOffset.Min(c => c.Min),
+                        Max = extremePointsInOffset.Max(c => c.Max),
+                        Prices = priceList.ToList()
+
+                    });
+                }
+            }
+            return newList;
+        }
+
+        private static List<Extrema> GetExtremePoints(List<Price> prices, ExtremaType extremePoint, double offsetPercent, List<Price> potentials)
+        {
             for (var i = 0; i < prices.Count - 1; i++)
             {
                 if (i == 0)
@@ -138,25 +273,30 @@ namespace AutoTrader.Runner.Services
                 var today = prices[i].Close;
                 var tomorrow = prices[i + 1].Close;
 
-                if (yesterday > today && today < tomorrow)
-                    potentials.Add(prices[i]);
-            }
-
-            var limitPoints = potentials.Select(p => new FocusPoint(p, offsetPercent)).ToList();
-
-            foreach (var limitPoint in limitPoints)
-            {
-                foreach (var potential in potentials.Where(c => c.StartTime < limitPoint.CurrentPrice.StartTime))
+                switch (extremePoint)
                 {
-                    if (limitPoint.CurrentPrice.StartTime == potential.StartTime)
-                        continue;
-
-                    if (potential.Close > limitPoint.LowerZone && potential.Close < limitPoint.UpperZone)
-                        limitPoint.Prices.Add(potential);
+                    case ExtremaType.Minimum:
+                        if (today.IsMinima(yesterday, tomorrow))
+                            potentials.Add(prices[i]);
+                        break;
+                    case ExtremaType.Maximum:
+                        if (today.IsMaxima(yesterday, tomorrow))
+                            potentials.Add(prices[i]);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(extremePoint), extremePoint, null);
                 }
             }
 
-            return limitPoints;
+            var extremePoints = potentials.Select(p => new Extrema(p, offsetPercent)).ToList();
+            return extremePoints;
+        }
+
+        private static bool IsIncluded(LinkedList<DateTime> childrenOfB, Extrema extrema)
+        {
+            var extremaPrices = extrema.Prices.Select(c => c.StartTime).ToList();
+
+            return childrenOfB.All(dateTime => extremaPrices.Contains(dateTime));
         }
     }
 }
