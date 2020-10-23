@@ -8,6 +8,7 @@ using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Yahoo.API.Contracts.FundamentalData.StubClasses;
 
 namespace AutoTrader.Runner.Services
 {
@@ -126,144 +127,145 @@ namespace AutoTrader.Runner.Services
             return momentumList;
         }
 
-        public List<ExtremaPoint> CalculateExtremePoints(List<Price> prices, ExtremaType extremePoint, double offsetPercent)
+        public List<ExtremaGroup> GetSupportExtremaGroups(List<Price> prices, ExtremaType extremePoint, double offsetPercent)
+        {
+            // Get extrema points
+            var extremePoints = GetExtremePoints(prices, extremePoint, offsetPercent);
+
+            // Filter broken limits
+            extremePoints = FilterBrokenLimits(extremePoints, ExtremaType.Minimum, offsetPercent);
+
+            // Merge group
+            var extremaGroups = MergeGroups(extremePoints, 1);
+
+            return extremaGroups;
+        }
+
+        public List<ExtremaGroup> GetRejectExtremaGroups(List<Price> prices, double offsetPercent)
+        {
+            var extremePoints = GetExtremePoints(prices, ExtremaType.Maximum, offsetPercent);
+
+            // Filter broken limits
+            extremePoints = FilterBrokenLimits(extremePoints, ExtremaType.Maximum, offsetPercent);
+
+            // Merge group
+            var extremaGroups = MergeGroups(extremePoints);
+
+            return extremaGroups;
+        }
+
+        private static List<ExtremaGroup> MergeGroups(List<Extrema> extremePoints, int minCount = 0)
+        {
+            extremePoints.Reverse();
+
+            var extremaGroups = new List<ExtremaGroup>();
+
+            for (var i = 0; i < extremePoints.Count - 1; i++)
+            {
+                var pointI = extremePoints[i];
+
+                var group = new ExtremaGroup()
+                {
+                    pointI.CurrentPrice
+                };
+
+                var newIndex = i;
+                for (var j = i + 1; j < extremePoints.Count; j++)
+                {
+                    var pointJ = extremePoints[j];
+
+                    var valJ = extremePoints[j].CurrentPrice.Close;
+
+                    if (valJ < pointI.UpperZone && valJ > pointI.LowerZone)
+                    {
+                        @group.Add(pointJ.CurrentPrice);
+                        newIndex = j;
+                    }
+                    else
+                        break;
+                }
+
+                i = newIndex;
+                extremaGroups.Add(@group);
+            }
+
+            extremaGroups = extremaGroups.Where(g => g.Count > minCount).ToList();
+            return extremaGroups;
+        }
+
+        private static List<Extrema> FilterBrokenLimits(List<Extrema> extremePoints, ExtremaType extremaType, double offsetPercent)
+        {
+            extremePoints.Reverse();
+
+            var mostExtrema = extremaType == ExtremaType.Minimum ? float.MaxValue : float.MinValue;
+
+            var activePoints = new List<Extrema>();
+
+            foreach (var point in extremePoints)
+            {
+                var val = point.CurrentPrice.Close;
+
+                if (!activePoints.Any())
+                {
+                    activePoints.Add(point);
+                    mostExtrema = val;
+                }
+                else
+                {
+                    var shouldCheckOffset = false;
+
+                    switch (extremaType)
+                    {
+                        case ExtremaType.Minimum:
+                        {
+                            // Even if bigger, check if is in offset
+                            if (mostExtrema < val)
+                                shouldCheckOffset = true;
+                            break;
+                        }
+                        case ExtremaType.Maximum:
+                        {
+                            // Even if smaller, check if is in offset
+                            if (mostExtrema > val)
+                                shouldCheckOffset = true;
+                            break;
+                        }
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(extremaType), extremaType, null);
+                    }
+
+                    if (shouldCheckOffset)
+                    {
+                        if (IsInOffsetRange(offsetPercent, val, mostExtrema, ExtremaType.Maximum))
+                            activePoints.Add(point);
+                        continue;
+                    }
+
+                    mostExtrema = val;
+                    activePoints.Add(point);
+                }
+            }
+
+            return activePoints;
+        }
+
+        private static bool IsInOffsetRange(double offsetPercent, float currentValue, float extremaValue, ExtremaType extremaType)
+        {
+            switch (extremaType)
+            {
+                case ExtremaType.Minimum:
+                    return currentValue < (extremaValue + (extremaValue * offsetPercent) / 100);
+                case ExtremaType.Maximum:
+                    return currentValue > (extremaValue - (extremaValue + offsetPercent) / 100);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(extremaType), extremaType, null);
+            }
+        }
+
+        private static List<Extrema> GetExtremePoints(List<Price> prices, ExtremaType extremePoint, double offsetPercent)
         {
             var potentials = new List<Price>();
 
-            // Get extreme points
-            var extremePoints = GetExtremePoints(prices, extremePoint, offsetPercent, potentials);
-
-
-            foreach (var extrema in extremePoints)
-            {
-                foreach (var potential in potentials.Where(c => c.StartTime < extrema.CurrentPrice.StartTime))
-                {
-                    if (extrema.CurrentPrice.StartTime == potential.StartTime)
-                        continue;
-
-                    if (potential.Close.IsBetween(extrema.LowerZone, extrema.UpperZone))
-                        extrema.Prices.Add(potential);
-                }
-            }
-
-            extremePoints = extremePoints.Where(c => c.Prices.Any()).ToList();
-
-            var list = new List<ExtremaPoint>();
-            var pointsToKeep = new HashSet<DateTime>();
-            var pointsToCheck = new Dictionary<DateTime, LinkedList<DateTime>>();
-
-            foreach (var extrema in extremePoints)
-            {
-                pointsToCheck[extrema.CurrentPrice.StartTime] = new LinkedList<DateTime>(extrema.Prices.Select(p => p.StartTime));
-            }
-
-            // Merge points
-            foreach (var (startTime, childrenOfB) in pointsToCheck.Reverse())
-            {
-                if (!pointsToKeep.Any())
-                    pointsToKeep.Add(startTime);
-                else
-                {
-                    var pointsWithB = extremePoints.Where(c => c.Prices.Any(c => c.StartTime == startTime));
-
-                    var shouldInclude = true;
-
-                    foreach (var extrema in pointsWithB)
-                    {
-                        if (!shouldInclude)
-                            break;
-
-                        if (!pointsToKeep.Contains(extrema.CurrentPrice.StartTime))
-                            continue;
-
-                        var isIncluded = IsIncluded(childrenOfB, extrema);
-
-                        if (isIncluded)
-                            shouldInclude = false;
-                    }
-
-                    if (shouldInclude)
-                        pointsToKeep.Add(startTime);
-                }
-            }
-
-            var l = extremePoints.Where(c => pointsToKeep.Contains(c.CurrentPrice.StartTime)).ToList();
-
-
-            foreach (var extrema in l)
-            {
-                prices = extrema.Prices.Concat(new List<Price> { extrema.CurrentPrice }).ToList();
-                var min = prices.Select(c => c.Close).Min();
-                var max = prices.Select(c => c.Close).Max();
-
-                list.Add(new ExtremaPoint
-                {
-                    Prices = prices,
-                    Min = min,
-                    Max = max,
-                    Avg = (min + max) / 2
-                });
-            }
-
-            foreach (var p in list)
-            {
-                Debug.WriteLine($"Min: {p.Min}");
-                Debug.WriteLine($"Max: {p.Max}");
-                Debug.WriteLine($"Avg: {p.Avg}");
-
-                foreach (var pPrice in p.Prices)
-                {
-                    Debug.WriteLine($"\t{pPrice.StartTime}");
-                }
-            }
-
-            list.Reverse();
-
-            var newList = new List<ExtremaPoint>();
-            var containedIds = new List<Guid>();
-
-            foreach (var pl in list)
-            {
-                var avg = pl.Avg;
-                var offset = (avg * offsetPercent / 100);
-
-                var upperLimit = avg + offset;
-                var lowerLimit = avg - offset;
-
-                var extremePointsInOffset = list.Where(c => c.Avg > lowerLimit && c.Avg < upperLimit).ToList();
-
-                if (extremePointsInOffset.Count() == 1 && containedIds.Contains(extremePointsInOffset.First().Id))
-                    continue;
-                else
-                {
-                    containedIds.AddRange(extremePointsInOffset.Select(c => c.Id));
-
-                    var priceList = new HashSet<Price>();
-
-                    foreach (var extremaPoint in extremePointsInOffset)
-                    {
-                        foreach (var extremaPointPrice in extremaPoint.Prices)
-                        {
-                            if (priceList.All(c => c.StartTime != extremaPointPrice.StartTime))
-                                priceList.Add(extremaPointPrice);
-                        }
-                    }
-
-                    newList.Add(new ExtremaPoint
-                    {
-                        Avg = extremePointsInOffset.Sum(c => c.Avg) / extremePointsInOffset.Count,
-                        Min = extremePointsInOffset.Min(c => c.Min),
-                        Max = extremePointsInOffset.Max(c => c.Max),
-                        Prices = priceList.ToList()
-
-                    });
-                }
-            }
-            return newList;
-        }
-
-        private static List<Extrema> GetExtremePoints(List<Price> prices, ExtremaType extremePoint, double offsetPercent, List<Price> potentials)
-        {
             for (var i = 0; i < prices.Count - 1; i++)
             {
                 if (i == 0)

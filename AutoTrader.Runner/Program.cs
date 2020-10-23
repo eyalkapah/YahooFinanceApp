@@ -44,8 +44,10 @@ namespace AutoTrader.Runner
             
             var offsetPercent = 0.5;
 
-            var supportPoints = priceManager.CalculateExtremePoints(prices, ExtremaType.Minimum, offsetPercent);
-            var rejectPoints = priceManager.CalculateExtremePoints(prices, ExtremaType.Maximum, offsetPercent);
+            var supportPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
+
+            var rejectPoints = priceManager.GetRejectExtremaGroups(prices, offsetPercent);
+            //var rejectPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Maximum, offsetPercent);
 
         }
     }

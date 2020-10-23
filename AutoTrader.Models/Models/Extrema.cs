@@ -1,4 +1,5 @@
-﻿using AutoTrader.Models.Models.HistoricalData;
+﻿using System;
+using AutoTrader.Models.Models.HistoricalData;
 using System.Collections.Generic;
 
 namespace AutoTrader.Models.Models
@@ -13,11 +14,14 @@ namespace AutoTrader.Models.Models
         public double Offset => CurrentPrice.Close * _offsetPercent / 100;
         public double UpperZone { get; set; }
         public double LowerZone { get; set; }
+        public Guid Id { get; set; }
 
         // C'tor
         //
         public Extrema(Price currentPrice, double offsetPercent)
         {
+            Id = Guid.NewGuid();
+
             Prices = new List<Price>();
 
             _offsetPercent = offsetPercent;
