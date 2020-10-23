@@ -156,11 +156,11 @@ namespace AutoTrader.Runner.Services
 
         private static List<ExtremaGroup> MergeGroups(List<Extrema> extremePoints, int minCount = 0)
         {
-            extremePoints.Reverse();
+            extremePoints = extremePoints.OrderByDescending(c => c.CurrentPrice.StartTime).ToList();
 
             var extremaGroups = new List<ExtremaGroup>();
 
-            for (var i = 0; i < extremePoints.Count - 1; i++)
+            for (var i = 0; i < extremePoints.Count; i++)
             {
                 var pointI = extremePoints[i];
 
@@ -236,7 +236,7 @@ namespace AutoTrader.Runner.Services
 
                     if (shouldCheckOffset)
                     {
-                        if (IsInOffsetRange(offsetPercent, val, mostExtrema, ExtremaType.Maximum))
+                        if (IsInOffsetRange(offsetPercent, val, mostExtrema, extremaType))
                             activePoints.Add(point);
                         continue;
                     }

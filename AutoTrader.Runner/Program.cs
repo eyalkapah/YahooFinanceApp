@@ -49,6 +49,17 @@ namespace AutoTrader.Runner
             var rejectPoints = priceManager.GetRejectExtremaGroups(prices, offsetPercent);
             //var rejectPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Maximum, offsetPercent);
 
+            var p = prices.Last();
+            Console.WriteLine($"Curret value: {p.Close}");
+
+            Console.WriteLine("Support Points");
+            supportPoints.Print(ExtremaType.Minimum);
+            Console.WriteLine();
+
+            Console.WriteLine("Reject Points");
+            rejectPoints.Print(ExtremaType.Maximum);
+
+
         }
     }
 
