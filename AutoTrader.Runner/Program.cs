@@ -59,7 +59,8 @@ namespace AutoTrader.Runner
             Console.WriteLine("Reject Points");
             rejectPoints.Print(ExtremaType.Maximum);
 
-
+            var daysMomentum = priceManager.GetDaysMomentum(prices);
+            daysMomentum.Print();
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
@@ -217,19 +218,19 @@ namespace AutoTrader.Runner.Services
                     switch (extremaType)
                     {
                         case ExtremaType.Minimum:
-                        {
-                            // Even if bigger, check if is in offset
-                            if (mostExtrema < val)
-                                shouldCheckOffset = true;
-                            break;
-                        }
+                            {
+                                // Even if bigger, check if is in offset
+                                if (mostExtrema < val)
+                                    shouldCheckOffset = true;
+                                break;
+                            }
                         case ExtremaType.Maximum:
-                        {
-                            // Even if smaller, check if is in offset
-                            if (mostExtrema > val)
-                                shouldCheckOffset = true;
-                            break;
-                        }
+                            {
+                                // Even if smaller, check if is in offset
+                                if (mostExtrema > val)
+                                    shouldCheckOffset = true;
+                                break;
+                            }
                         default:
                             throw new ArgumentOutOfRangeException(nameof(extremaType), extremaType, null);
                     }
@@ -299,6 +300,45 @@ namespace AutoTrader.Runner.Services
             var extremaPrices = extrema.Prices.Select(c => c.StartTime).ToList();
 
             return childrenOfB.All(dateTime => extremaPrices.Contains(dateTime));
+        }
+
+        public Dictionary<DayOfWeek, MomentumCount> GetDaysMomentum(List<Price> prices)
+        {
+            var momentum = new Dictionary<DayOfWeek, MomentumCount>
+            {
+                {DayOfWeek.Monday, new MomentumCount()},
+                {DayOfWeek.Tuesday, new MomentumCount()},
+                {DayOfWeek.Wednesday, new MomentumCount()},
+                {DayOfWeek.Thursday, new MomentumCount()},
+                {DayOfWeek.Friday, new MomentumCount()},
+            };
+
+            for (var i = 1; i < prices.Count; i++)
+            {
+                var prevPrice = prices[i - 1];
+                var currentPrice = prices[i];
+
+                var day = currentPrice.StartTime.DayOfWeek;
+
+                var revenue = 0d;
+
+                if (currentPrice.Close > prevPrice.Close)
+                {
+                    momentum[day].UpCount++;
+                    revenue = (currentPrice.Close - prevPrice.Close) / prevPrice.Close * 100;
+                }
+                    
+                else if (currentPrice.Close < prevPrice.Close)
+                {
+                    momentum[day].DownCount++;
+                    revenue = -(prevPrice.Close - currentPrice.Close) / prevPrice.Close * 100;
+                }
+
+
+                momentum[day].TotalRevenue += revenue;
+            }
+
+            return momentum;
         }
     }
 }
