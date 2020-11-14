@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
-using AutoTrader.Models.Models;
-using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Runner.Oscillators;
 using AutoTrader.Runner.Services;
 using AutoTrader.Yahoo.API;
-using System.Linq;
-using AutoTrader.Models.Enums;
+using ScottPlot;
 
 namespace AutoTrader.Runner
 {
@@ -23,6 +23,24 @@ namespace AutoTrader.Runner
             _priceManager = new PriceManager(yahooService);
             
             await TargilAsync();
+            var data = await yahooService.GetFundamentalDataAsync("SPOT", "assetProfile,recommendationTrend,cashflowStatementHistory" +
+                                                         ",indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory" +
+                                                         ",fundOwnership,summaryDetail" +
+                                                         ",insiderHolders" +
+                                                         ",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory" +
+                                                         ",earningsTrend,secFilings,institutionOwnership" +
+                                                         ",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores" +
+                                                         ",summaryProfile,netSharePurchaseActivity,insiderTransactions" +
+                                                         ",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
+                                                         ",financialData");
+
+            var r = data.QuoteSummary.Result;
+
+            foreach (var result in r)
+            {
+            }
+
+            var priceManager = new PriceManager(yahooService);
 
             var tickerManager = new TickerManager(yahooService, _priceManager);
 
@@ -46,21 +64,38 @@ namespace AutoTrader.Runner
 
 
             var offsetPercent = 1;
+            var stochasticService = new StochasticService();
+            var vals = stochasticService.Run(prices);
 
-            var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
 
-            var rejectPoints = _priceManager.GetRejectExtremaGroups(prices, offsetPercent);
-            //var rejectPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Maximum, offsetPercent);
+            var plt = new ScottPlot.Plot(600, 400);
 
-            var p = prices.Last();
-            Console.WriteLine($"Curret value: {p.Close}");
+            plt.PlotSignal(vals.Select(c => c.Value).ToArray());
 
-            Console.WriteLine("Support Points");
-            supportPoints.Print(ExtremaType.Minimum);
-            Console.WriteLine();
+            plt.Title("Signal Plot Quickstart (5 million points)");
+            plt.YLabel("Vertical Units");
+            plt.XLabel("Horizontal Units");
 
-            Console.WriteLine("Reject Points");
-            rejectPoints.Print(ExtremaType.Maximum);
+            plt.SaveFig("Quickstart_Quickstart_Signal_5MillionPoints.png");
+
+            return;
+
+            //var offsetPercent = 0.5;
+
+            //var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
+
+            //var rejectPoints = _priceManager.GetRejectExtremaGroups(prices, offsetPercent);
+            ////var rejectPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Maximum, offsetPercent);
+
+            //var p = prices.Last();
+            //Console.WriteLine($"Curret value: {p.Close}");
+
+            //Console.WriteLine("Support Points");
+            //supportPoints.Print(ExtremaType.Minimum);
+            //Console.WriteLine();
+
+            //Console.WriteLine("Reject Points");
+            //rejectPoints.Print(ExtremaType.Maximum);
 
 
         }
@@ -177,7 +212,7 @@ namespace AutoTrader.Runner
             Console.WriteLine($"#6: Lowest average:  {minAvg}, Date: {minRecord.Year}-{minRecord.Month}");
 
             // 7
-            var specificPrices = fiveYearsPrices.OrderBy(c => c.StartTime)
+           var specificPrices = fiveYearsPrices.OrderBy(c => c.StartTime)
                 .Where(c => c.StartTime.Year >= 2013 && c.StartTime.Year < 2015).ToList();
 
             var top100Stocks = _priceManager.CalculateProfits(specificPrices)

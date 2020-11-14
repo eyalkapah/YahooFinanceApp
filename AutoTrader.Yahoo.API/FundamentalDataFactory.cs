@@ -1072,6 +1072,9 @@ namespace AutoTrader.Yahoo.API
 
         private static Value GetValue(ValueContract value)
         {
+            if (value == null)
+                return null;
+
             return new Value
             {
                 Fmt = value.Fmt,
