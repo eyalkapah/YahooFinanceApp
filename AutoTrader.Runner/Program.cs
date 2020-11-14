@@ -41,6 +41,11 @@ namespace AutoTrader.Runner
             }
 
             var priceManager = new PriceManager(yahooService);
+=========
+            _priceManager = new PriceManager(yahooService);
+            
+            await TargilAsync();
+>>>>>>>>> Temporary merge branch 2
 
             var tickerManager = new TickerManager(yahooService, _priceManager);
 
@@ -80,12 +85,13 @@ namespace AutoTrader.Runner
 
             return;
 
-            //var offsetPercent = 0.5;
+            var offsetPercent = 0.5;
+=========
+>>>>>>>>> Temporary merge branch 2
 
-            //var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
+            var offsetPercent = 1;
 
-            //var rejectPoints = _priceManager.GetRejectExtremaGroups(prices, offsetPercent);
-            ////var rejectPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Maximum, offsetPercent);
+            var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
 
             //var p = prices.Last();
             //Console.WriteLine($"Curret value: {p.Close}");
@@ -98,6 +104,8 @@ namespace AutoTrader.Runner
             //rejectPoints.Print(ExtremaType.Maximum);
 
 
+            var daysMomentum = priceManager.GetDaysMomentum(prices);
+            daysMomentum.Print();
         }
 
         private static async Task TargilAsync()
