@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
-using AutoTrader.Models.Models;
-using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Runner.Oscillators;
 using AutoTrader.Runner.Services;
 using AutoTrader.Yahoo.API;
-using System.Linq;
-using AutoTrader.Models.Enums;
+using ScottPlot;
 
 namespace AutoTrader.Runner
 {
@@ -18,6 +18,23 @@ namespace AutoTrader.Runner
         static async Task Main(string[] args)
         {
             IStockDataService yahooService = new YahooService();
+
+            var data = await yahooService.GetFundamentalDataAsync("SPOT", "assetProfile,recommendationTrend,cashflowStatementHistory" +
+                                                         ",indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory" +
+                                                         ",fundOwnership,summaryDetail" +
+                                                         ",insiderHolders" +
+                                                         ",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory" +
+                                                         ",earningsTrend,secFilings,institutionOwnership" +
+                                                         ",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores" +
+                                                         ",summaryProfile,netSharePurchaseActivity,insiderTransactions" +
+                                                         ",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
+                                                         ",financialData");
+
+            var r = data.QuoteSummary.Result;
+
+            foreach (var result in r)
+            {
+            }
 
             var priceManager = new PriceManager(yahooService);
 
@@ -30,7 +47,7 @@ namespace AutoTrader.Runner
                 {"Sector", "Sector"},
             }).Result;
 
-            
+
 
             var msftTicker = tickerManager.GetTickerBySymbol(tickers, "MSFT");
 
@@ -41,7 +58,22 @@ namespace AutoTrader.Runner
                 Interval.OneDay,
                 false);
 
-            
+            var stochasticService = new StochasticService();
+            var vals = stochasticService.Run(prices);
+
+
+            var plt = new ScottPlot.Plot(600, 400);
+
+            plt.PlotSignal(vals.Select(c => c.Value).ToArray());
+
+            plt.Title("Signal Plot Quickstart (5 million points)");
+            plt.YLabel("Vertical Units");
+            plt.XLabel("Horizontal Units");
+
+            plt.SaveFig("Quickstart_Quickstart_Signal_5MillionPoints.png");
+
+            return;
+
             var offsetPercent = 0.5;
 
             var supportPoints = priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
@@ -64,5 +96,5 @@ namespace AutoTrader.Runner
         }
     }
 
-    
+
 }
