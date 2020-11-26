@@ -92,7 +92,6 @@ namespace AutoTrader.Runner
 
         private static async Task TargilAsync()
         {
-            // NEED TO FIX THIS METHOD IT BROKEN SOMEWHERE IN MERGE
             var prices = await CsvExtensions.ReadCsvAsync(
                 @"C:\Users\eykapah\Downloads\AMZN_09_07_2020-10_07_2020_1sec - Copy.csv",
                 new Dictionary<string, string>
@@ -103,7 +102,7 @@ namespace AutoTrader.Runner
                     {"High", "High"},
                     {"Low", "Low"},
                     {"Volume", "Volume"}
-                });
+                }, "AMZN");
 
             // 1
             var maxVolume = prices.Max(p => p.Volume);
