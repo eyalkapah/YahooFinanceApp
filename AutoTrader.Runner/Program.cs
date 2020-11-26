@@ -29,12 +29,9 @@ namespace AutoTrader.Runner
             {
             }
 
-            var priceManager = new PriceManager(yahooService);
-=========
             _priceManager = new PriceManager(yahooService);
             
             await TargilAsync();
->>>>>>>>> Temporary merge branch 2
 
             var tickerManager = new TickerManager(yahooService, _priceManager);
 
@@ -74,13 +71,9 @@ namespace AutoTrader.Runner
 
             return;
 
-            var offsetPercent = 0.5;
-=========
->>>>>>>>> Temporary merge branch 2
+            //var offsetPercent = 0.5;
 
-            var offsetPercent = 1;
-
-            var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
+            //var supportPoints = _priceManager.GetSupportExtremaGroups(prices, ExtremaType.Minimum, offsetPercent);
 
             //var p = prices.Last();
             //Console.WriteLine($"Curret value: {p.Close}");
@@ -93,12 +86,13 @@ namespace AutoTrader.Runner
             //rejectPoints.Print(ExtremaType.Maximum);
 
 
-            var daysMomentum = priceManager.GetDaysMomentum(prices);
+            var daysMomentum = _priceManager.GetDaysMomentum(prices);
             daysMomentum.Print();
         }
 
         private static async Task TargilAsync()
         {
+            // NEED TO FIX THIS METHOD IT BROKEN SOMEWHERE IN MERGE
             var prices = await CsvExtensions.ReadCsvAsync(
                 @"C:\Users\eykapah\Downloads\AMZN_09_07_2020-10_07_2020_1sec - Copy.csv",
                 new Dictionary<string, string>
@@ -109,7 +103,7 @@ namespace AutoTrader.Runner
                     {"High", "High"},
                     {"Low", "Low"},
                     {"Volume", "Volume"}
-                }, "AMZN");
+                });
 
             // 1
             var maxVolume = prices.Max(p => p.Volume);
