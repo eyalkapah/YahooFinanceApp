@@ -76,7 +76,7 @@ namespace AutoTrader.Models.Helpers
             return tickers;
         }
 
-        public static async Task<List<Price>> ReadCsvAsync(string filePath, Dictionary<string, string> map)
+        public static async Task<List<Price>> ReadCsvAsync(string filePath, Dictionary<string, string> map, string ticker = null)
         {
             var lines = await File.ReadAllLinesAsync(filePath);
 
@@ -89,7 +89,7 @@ namespace AutoTrader.Models.Helpers
                 var lineSplit = line.Split(',');
 
                 DateTime date = default;
-                var symbol = string.Empty;
+                var symbol = !string.IsNullOrEmpty(ticker) ? ticker : string.Empty;
                 string open = default;
                 string high = default;
                 string low = default;

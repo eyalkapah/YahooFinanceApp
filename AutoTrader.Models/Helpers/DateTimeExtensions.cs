@@ -17,5 +17,12 @@ namespace AutoTrader.Models.Helpers
             var dto = DateTimeOffset.FromUnixTimeSeconds(seconds);
             return dto.DateTime;
         }
+
+        public static DateTime MakeCandleOf(this DateTime dateTime, int candleNum)
+        {
+            var noSeconds = DateTime.Parse(dateTime.ToString("g"));
+
+            return noSeconds.AddMinutes(-noSeconds.Minute % candleNum);
+        }
     }
 }
