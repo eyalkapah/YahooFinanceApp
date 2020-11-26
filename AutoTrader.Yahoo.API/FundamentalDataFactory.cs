@@ -313,6 +313,9 @@ namespace AutoTrader.Yahoo.API
 
         private static MajorDirectHolders GetMajorDirectHolders(MajorDirectHoldersContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new MajorDirectHolders
             {
                 MaxAge = contract.MaxAge,
@@ -514,6 +517,9 @@ namespace AutoTrader.Yahoo.API
 
         private static BalanceSheetHistory GetBalanceSheetHistory(BalanceSheetHistoryContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new BalanceSheetHistory
             {
                 MaxAge = contract.MaxAge,
@@ -679,6 +685,9 @@ namespace AutoTrader.Yahoo.API
 
         private static InsiderHolders GetInsiderHolders(InsiderHoldersContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new InsiderHolders
             {
                 MaxAge = contract.MaxAge,
@@ -706,6 +715,9 @@ namespace AutoTrader.Yahoo.API
 
         private static SummaryDetail GetSummaryDetail(SummaryDetailContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new SummaryDetail
             {
                 Algorithm = contract.Algorithm,
@@ -766,6 +778,9 @@ namespace AutoTrader.Yahoo.API
 
         private static FundOwnerShip GetFundOwnership(FundOwnerShipContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new FundOwnerShip
             {
                 MaxAge = contract.MaxAge,
@@ -791,6 +806,9 @@ namespace AutoTrader.Yahoo.API
 
         private static IncomeStatementHistory GetIncomeStatementHistory(IncomeStatementHistoryContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new IncomeStatementHistory
             {
                 MaxAge = contract.MaxAge,
@@ -800,6 +818,9 @@ namespace AutoTrader.Yahoo.API
 
         private static IEnumerable<IncomeStatementHistory1> GetIncomeStatementsHistory(IncomeStatementHistory1Contract[] contract)
         {
+            if (contract == null)
+                yield return null;
+
             foreach (var c in contract)
             {
                 yield return new IncomeStatementHistory1
@@ -915,6 +936,9 @@ namespace AutoTrader.Yahoo.API
 
         private static IndexTrend GetIndexTrend(IndexTrendContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new IndexTrend
             {
                 Symbol = contract.Symbol,
@@ -939,6 +963,9 @@ namespace AutoTrader.Yahoo.API
 
         private static CashFlowStatementHistory GetCashflowStatementHistory(CashFlowStatementHistoryContract contract)
         {
+            if (contract == null)
+                return null;
+
             return new CashFlowStatementHistory
             {
                 MaxAge = contract.MaxAge,

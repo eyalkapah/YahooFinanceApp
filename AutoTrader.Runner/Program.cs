@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
+using AutoTrader.Models.Models;
 using AutoTrader.Runner.Oscillators;
 using AutoTrader.Runner.Services;
 using AutoTrader.Yahoo.API;
@@ -19,16 +20,7 @@ namespace AutoTrader.Runner
         {
             IStockDataService yahooService = new YahooService();
 
-            var data = await yahooService.GetFundamentalDataAsync("SPOT", "assetProfile,recommendationTrend,cashflowStatementHistory" +
-                                                         ",indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory" +
-                                                         ",fundOwnership,summaryDetail" +
-                                                         ",insiderHolders" +
-                                                         ",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory" +
-                                                         ",earningsTrend,secFilings,institutionOwnership" +
-                                                         ",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores" +
-                                                         ",summaryProfile,netSharePurchaseActivity,insiderTransactions" +
-                                                         ",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
-                                                         ",financialData");
+            var data = await yahooService.GetFundamentalDataAsync("SPOT", assetProfile:true);
 
             var r = data.QuoteSummary.Result;
 
@@ -39,6 +31,17 @@ namespace AutoTrader.Runner
             var priceManager = new PriceManager(yahooService);
 
             var tickerManager = new TickerManager(yahooService, priceManager);
+
+            
+
+            while (true)
+            {
+                await Task.Delay(1000);
+                var pricesMSFT = await priceManager.GetPricesAsync(new Ticker("MSFT"), DateTime.Now.AddDays(-1),
+                    DateTime.Now, Interval.OneDay, false);
+
+                Console.WriteLine(pricesMSFT.Last().Close);
+            }
 
             var tickers = CsvExtensions.ReadConstituentsAsync("Data\\constituents.csv", new Dictionary<string, string>
             {

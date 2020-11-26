@@ -14,6 +14,7 @@ using AutoTrader.Models.Models.Options;
 using AutoTrader.Yahoo.API.Contracts.FundamentalData;
 using AutoTrader.Yahoo.API.Contracts.HistoricalData;
 using AutoTrader.Yahoo.API.Contracts.Options;
+using AutoTrader.Yahoo.API.Helpers;
 using Price = AutoTrader.Models.Models.HistoricalData.Price;
 
 namespace AutoTrader.Yahoo.API
@@ -112,19 +113,49 @@ namespace AutoTrader.Yahoo.API
             //return contract.GetHistoricalData();
         }
 
-        public async Task<FundamentalData> GetFundamentalDataAsync(string symbol, params string[] modules)
+        public async Task<FundamentalData> GetFundamentalDataAsync(string symbol, bool assetProfile,
+            bool recommendationTrend, bool cashflowStatementHistory,
+            bool indexTrend, bool defaultKeyStatistics, bool industryTrend, bool incomeStatementHistory,
+            bool fundOwnership, bool summaryDetail, bool insiderHolders, bool calendarEvents,
+            bool upgradeDowngradeHistory, bool price,
+            bool earningsTrend, bool secFilings, bool institutionOwnership, bool majorHoldersBreakdown,
+            bool balanceSheetHistory, bool majorDirectHolders, bool esgScores,
+            bool summaryProfile, bool netSharePurchaseActivity, bool insiderTransactions,
+            bool incomeStatementHistoryQuarterly, bool cashflowStatementHistoryQuarterly,
+            bool financialData)
         {
-            var url =
-                $"{symbol}?modules=assetProfile,recommendationTrend,cashflowStatementHistory" +
-                $",indexTrend,defaultKeyStatistics,industryTrend,incomeStatementHistory" +
-                $",fundOwnership,summaryDetail" +
-                $",insiderHolders" +
-                $",calendarEvents,upgradeDowngradeHistory,price,balanceSheetHistory" +
-                $",earningsTrend,secFilings,institutionOwnership" +
-                $",majorHoldersBreakdown,balanceSheetHistory,majorDirectHolders,esgScores" +
-                $",summaryProfile,netSharePurchaseActivity,insiderTransactions" +
-                $",incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly" +
-                $",financialData";
+            var builder = new List<string>();
+
+            builder.AddModule(nameof(assetProfile), assetProfile);
+            builder.AddModule(nameof(recommendationTrend), recommendationTrend);
+            builder.AddModule(nameof(cashflowStatementHistory), cashflowStatementHistory);
+            builder.AddModule(nameof(indexTrend), indexTrend);
+            builder.AddModule(nameof(defaultKeyStatistics), defaultKeyStatistics);
+            builder.AddModule(nameof(industryTrend), industryTrend);
+            builder.AddModule(nameof(incomeStatementHistory), incomeStatementHistory);
+            builder.AddModule(nameof(fundOwnership), fundOwnership);
+            builder.AddModule(nameof(summaryDetail), summaryDetail);
+            builder.AddModule(nameof(insiderHolders), insiderHolders);
+            builder.AddModule(nameof(calendarEvents), calendarEvents);
+            builder.AddModule(nameof(upgradeDowngradeHistory), upgradeDowngradeHistory);
+            builder.AddModule(nameof(price), price);
+            builder.AddModule(nameof(earningsTrend), earningsTrend);
+            builder.AddModule(nameof(secFilings), secFilings);
+            builder.AddModule(nameof(institutionOwnership), institutionOwnership);
+            builder.AddModule(nameof(majorHoldersBreakdown), majorHoldersBreakdown);
+            builder.AddModule(nameof(balanceSheetHistory), balanceSheetHistory);
+            builder.AddModule(nameof(majorDirectHolders), majorDirectHolders);
+            builder.AddModule(nameof(esgScores), esgScores);
+            builder.AddModule(nameof(summaryProfile), summaryProfile);
+            builder.AddModule(nameof(netSharePurchaseActivity), netSharePurchaseActivity);
+            builder.AddModule(nameof(insiderTransactions), insiderTransactions);
+            builder.AddModule(nameof(incomeStatementHistoryQuarterly), incomeStatementHistoryQuarterly);
+            builder.AddModule(nameof(cashflowStatementHistoryQuarterly), cashflowStatementHistoryQuarterly);
+            builder.AddModule(nameof(financialData), financialData);
+
+            var modules = string.Join(",", builder);
+
+            var url = $"{symbol}?modules={modules}";
 
             var response = await _client.GetV10Client(url);
 
