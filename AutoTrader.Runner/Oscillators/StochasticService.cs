@@ -28,6 +28,11 @@ namespace AutoTrader.Runner.Oscillators
                 };
 
                 list.Add(sPrice);
+
+                if (list.Count >= 3)
+                {
+                    sPrice.SlowValue = list.TakeLast(3).Average(c => c.Value);
+                }
             }
 
             return list;

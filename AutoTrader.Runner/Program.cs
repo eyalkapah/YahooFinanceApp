@@ -42,13 +42,13 @@ namespace AutoTrader.Runner
             }
             var plt = new Plot(600, 400);
 
-            plt.PlotSignal(sData.Select(c => (double)c.Value).ToArray());
+            plt.PlotSignal(sData.Select(c => (double)c.SlowValue).ToArray());
 
             plt.Title("IBM Stochastic");
             plt.YLabel("Vertical Units");
             plt.XLabel("Horizontal Units");
 
-            plt.SaveFig("IBM Stochastic.png");
+            plt.SaveFig("IBM Slow Stochastic.png");
 
 
 

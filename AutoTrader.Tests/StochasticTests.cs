@@ -38,6 +38,21 @@ namespace AutoTrader.Tests
             Assert.AreEqual(data.Last().Value, 56.76, "Value doesn't match");
         }
 
+        [TestMethod]
+        public void SlowStochasticTest()
+        {
+            var data = _stochasticService.Run(_prices);
+
+            for (var i = 3; i < data.Count; i++)
+            {
+                data[i].SlowValue = data.TakeLast(3).Average(c => c.Value);
+            }
+
+            Assert.AreEqual(data.First().SlowValue, default, "Slow stochastic should be NaN");
+            Assert.AreEqual(data.Last().SlowValue, 54.75, "Slow stochastic value doesn't match");
+           
+        }
+
         public List<Price> GetData()
         {
             return new List<Price>

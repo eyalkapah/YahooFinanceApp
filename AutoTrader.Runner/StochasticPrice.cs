@@ -11,5 +11,6 @@ namespace AutoTrader.Runner
         public float Close { get; set; }
         public double Value => Math.Round((((Close - Low) / (High - Low)) * 100),2);
         public Price Price { get; set; }
+        public double SlowValue { get; set; }
     }
 }
