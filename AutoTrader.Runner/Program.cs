@@ -1,21 +1,21 @@
-﻿using System;
+﻿using AutoTrader.Interfaces;
+using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Oscillators.Oscillators;
+using AutoTrader.Yahoo.API;
+using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoTrader.Interfaces;
-using AutoTrader.Models.Helpers;
-using AutoTrader.Models.Models.HistoricalData;
-using AutoTrader.Oscillators.Oscillators;
-using AutoTrader.Runner.Services;
-using AutoTrader.Yahoo.API;
-using ScottPlot;
+using AutoTrader.Services;
 
 namespace AutoTrader.Runner
 {
     class Program
     {
-        private static PriceManager _priceManager;
+        private static IPriceManager _priceManager;
 
         static async Task Main(string[] args)
         {

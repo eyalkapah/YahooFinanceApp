@@ -2,14 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Services\API\**" />
-    <EmbeddedResource Remove="Services\API\**" />
-    <None Remove="Services\API\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ScottPlot" Version="4.0.42" />
@@ -18,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
     <ProjectReference Include="..\AutoTrader.Oscillators\AutoTrader.Oscillators.csproj" />
+    <ProjectReference Include="..\AutoTrader.Services\AutoTrader.Services.csproj" />
     <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
   </ItemGroup>
 

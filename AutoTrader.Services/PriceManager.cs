@@ -1,17 +1,16 @@
-﻿using AutoTrader.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoTrader.Interfaces;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-
-namespace AutoTrader.Runner.Services
+namespace AutoTrader.Services
 {
-    public class PriceManager
+    public class PriceManager : IPriceManager
     {
         private readonly IStockDataService _service;
 
@@ -31,7 +30,7 @@ namespace AutoTrader.Runner.Services
                     Interval.OneDay,
                     true);
 
-                return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
+                return result.Prices.TakeLastOf(numOfDays).OrderBy(c => c.StartTime);
             }
             catch (Exception e)
             {

@@ -1,14 +1,14 @@
-﻿using AutoTrader.Models.Enums;
-using AutoTrader.Models.Helpers;
-using AutoTrader.Models.Models;
-using AutoTrader.Models.Models.HistoricalData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoTrader.Interfaces;
+using AutoTrader.Models.Enums;
+using AutoTrader.Models.Helpers;
+using AutoTrader.Models.Models;
+using AutoTrader.Models.Models.HistoricalData;
 
-namespace AutoTrader.Runner.Services
+namespace AutoTrader.Services
 {
     public class TickerManager
     {
@@ -87,7 +87,7 @@ namespace AutoTrader.Runner.Services
                 {
                     var sectorName = tickers.GetSector(p.Symbol);
 
-                    sectorProfits.TryAdd(sectorName, new SectorProfit(sectorName));
+                    sectorProfits.Add(sectorName, new SectorProfit(sectorName));
 
                     sectorProfits[sectorName].TotalProfit += Math.Round(p.ProfitPercentage, 2);
                     sectorProfits[sectorName].Symbols.Add(p.Symbol);

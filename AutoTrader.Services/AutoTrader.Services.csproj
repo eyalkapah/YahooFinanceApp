@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
+    <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

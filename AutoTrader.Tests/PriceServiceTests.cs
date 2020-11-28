@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Models.HistoricalData;
-using AutoTrader.Runner.Services;
+using AutoTrader.Services;
 
 namespace AutoTrader.Tests
 {
