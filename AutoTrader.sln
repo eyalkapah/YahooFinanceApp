@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Runner", "AutoTr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Models", "AutoTrader.Models\AutoTrader.Models.csproj", "{DFBB597D-DDCC-4FD4-85B9-B01A18D09070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Oscillators", "AutoTrader.Oscillators\AutoTrader.Oscillators.csproj", "{F385FB35-FDED-49B2-AB1D-35ED64C0A4AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Oscillators", "AutoTrader.Oscillators\AutoTrader.Oscillators.csproj", "{F385FB35-FDED-49B2-AB1D-35ED64C0A4AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Interfaces", "AutoTrader.Interfaces\AutoTrader.Interfaces.csproj", "{987746A8-7F74-4D71-9F31-04E8C78DAFE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{F385FB35-FDED-49B2-AB1D-35ED64C0A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F385FB35-FDED-49B2-AB1D-35ED64C0A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F385FB35-FDED-49B2-AB1D-35ED64C0A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987746A8-7F74-4D71-9F31-04E8C78DAFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987746A8-7F74-4D71-9F31-04E8C78DAFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987746A8-7F74-4D71-9F31-04E8C78DAFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987746A8-7F74-4D71-9F31-04E8C78DAFE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

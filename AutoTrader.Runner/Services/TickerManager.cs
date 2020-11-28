@@ -1,12 +1,12 @@
 ﻿using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
-using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoTrader.Interfaces;
 
 namespace AutoTrader.Runner.Services
 {

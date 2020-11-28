@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+﻿using AutoTrader.Interfaces;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
-using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
-using AutoTrader.Yahoo.API.Contracts.FundamentalData.StubClasses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace AutoTrader.Runner.Services

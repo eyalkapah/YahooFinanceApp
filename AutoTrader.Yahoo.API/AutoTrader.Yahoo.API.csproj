@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
     <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
   </ItemGroup>
 

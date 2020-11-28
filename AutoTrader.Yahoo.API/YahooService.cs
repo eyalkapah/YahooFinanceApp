@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using AutoTrader.Models.Enums;
+﻿using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
-using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.FundamentalData;
 using AutoTrader.Models.Models.HistoricalData;
@@ -15,6 +8,12 @@ using AutoTrader.Yahoo.API.Contracts.FundamentalData;
 using AutoTrader.Yahoo.API.Contracts.HistoricalData;
 using AutoTrader.Yahoo.API.Contracts.Options;
 using AutoTrader.Yahoo.API.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using AutoTrader.Interfaces;
 using Price = AutoTrader.Models.Models.HistoricalData.Price;
 
 namespace AutoTrader.Yahoo.API

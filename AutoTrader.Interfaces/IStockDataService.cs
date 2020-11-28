@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Models;
@@ -9,7 +8,7 @@ using AutoTrader.Models.Models.HistoricalData;
 using AutoTrader.Models.Models.Options;
 using Price = AutoTrader.Models.Models.HistoricalData.Price;
 
-namespace AutoTrader.Models.Interfaces
+namespace AutoTrader.Interfaces
 {
     public interface IStockDataService
     {
