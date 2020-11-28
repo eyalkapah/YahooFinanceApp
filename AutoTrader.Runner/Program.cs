@@ -6,6 +6,7 @@ using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
 using AutoTrader.Models.Models;
+using AutoTrader.Models.Models.HistoricalData;
 using AutoTrader.Runner.Oscillators;
 using AutoTrader.Runner.Services;
 using AutoTrader.Yahoo.API;
@@ -33,46 +34,65 @@ namespace AutoTrader.Runner
 
             var stochasticService = new StochasticService();
 
+            var sData = stochasticService.Run(GetData());
 
-            await TargilAsync();
-
-            var tickerManager = new TickerManager(yahooService, _priceManager);
-
-            var tickers = CsvExtensions.ReadConstituentsAsync("Data\\constituents.csv", new Dictionary<string, string>
+            foreach (var p in sData)
             {
-                {"Symbol", "Symbol"},
-                {"Name", "Name"},
-                {"Sector", "Sector"},
-            }).Result;
+             Console.WriteLine(p.Value);   
+            }
+            var plt = new Plot(600, 400);
+
+            plt.PlotSignal(sData.Select(c => (double)c.Value).ToArray());
+
+            plt.Title("IBM Stochastic");
+            plt.YLabel("Vertical Units");
+            plt.XLabel("Horizontal Units");
+
+            plt.SaveFig("IBM Stochastic.png");
 
 
 
-            var msftTicker = tickerManager.GetTickerBySymbol(tickers, "MSFT");
+            //var list = stochasticService.Run(sData);
 
-            var prices = await _priceManager.GetPricesAsync(
-                msftTicker,
-                new DateTime(2020, 4, 13),
-                new DateTime(2020, 6, 26),
-                Interval.OneDay,
-                false);
+            //await TargilAsync();
+
+            //var tickerManager = new TickerManager(yahooService, _priceManager);
+
+            //var tickers = CsvExtensions.ReadConstituentsAsync("Data\\constituents.csv", new Dictionary<string, string>
+            //{
+            //    {"Symbol", "Symbol"},
+            //    {"Name", "Name"},
+            //    {"Sector", "Sector"},
+            //}).Result;
+
+
+
+            //var msftTicker = tickerManager.GetTickerBySymbol(tickers, "MSFT");
+
+            //var prices = await _priceManager.GetPricesAsync(
+            //    msftTicker,
+            //    new DateTime(2020, 4, 13),
+            //    new DateTime(2020, 6, 26),
+            //    Interval.OneDay,
+            //    false);
 
 
             
 
-            var offsetPercent = 1;
+            //var offsetPercent = 1;
            
-            var vals = stochasticService.Run(prices);
+            //var vals = stochasticService.Run(prices);
 
 
-            var plt = new ScottPlot.Plot(600, 400);
+            //var plt = new ScottPlot.Plot(600, 400);
 
-            plt.PlotSignal(vals.Select(c => (double)c.Value).ToArray());
+            //plt.PlotSignal(vals.Select(c => (double)c.Value).ToArray());
 
-            plt.Title("Signal Plot Quickstart (5 million points)");
-            plt.YLabel("Vertical Units");
-            plt.XLabel("Horizontal Units");
+            //plt.Title("Signal Plot Quickstart (5 million points)");
+            //plt.YLabel("Vertical Units");
+            //plt.XLabel("Horizontal Units");
 
-            plt.SaveFig("Quickstart_Quickstart_Signal_5MillionPoints.png");
+            //plt.SaveFig("Quickstart_Quickstart_Signal_5MillionPoints.png");
 
             return;
 
@@ -91,8 +111,212 @@ namespace AutoTrader.Runner
             //rejectPoints.Print(ExtremaType.Maximum);
 
 
-            var daysMomentum = _priceManager.GetDaysMomentum(prices);
-            daysMomentum.Print();
+            //var daysMomentum = _priceManager.GetDaysMomentum(prices);
+            //daysMomentum.Print();
+        }
+
+        public static List<Price> GetData()
+        {
+            return new List<Price>
+            {
+                new Price
+                {
+                    StartTime = new DateTime(10, 2, 23),
+                    High = 127.01f,
+                    Low = 125.36f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 2, 24),
+                    High = 127.62f,
+                    Low = 126.16f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 2, 25),
+                    High = 126.59f,
+                    Low = 124.93f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 2, 26),
+                    High = 127.35f,
+                    Low = 126.09f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 1),
+                    High = 128.17f,
+                    Low = 126.82f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 2),
+                    High = 128.43f,
+                    Low = 126.48f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 3),
+                    High = 127.37f,
+                    Low = 126.03f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 4),
+                    High = 126.42f,
+                    Low = 124.83f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 5),
+                    High = 126.90f,
+                    Low = 126.39f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 8),
+                    High = 126.85f,
+                    Low = 125.72f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 9),
+                    High = 125.65f,
+                    Low = 124.56f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 10),
+                    High = 125.72f,
+                    Low = 124.57f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 11),
+                    High = 127.16f,
+                    Low = 125.07f,
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 12),
+                    High = 127.72f,
+                    Low = 126.86f,
+                    Close = 127.29f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 15),
+                    High = 127.69f,
+                    Low = 126.63f,
+                    Close = 127.18f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 16),
+                    High = 128.22f,
+                    Low = 126.80f,
+                    Close = 128.01f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 17),
+                    High = 128.27f,
+                    Low = 126.71f,
+                    Close = 127.11f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 18),
+                    High = 128.09f,
+                    Low = 126.8f,
+                    Close = 127.73f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 19),
+                    High = 128.27f,
+                    Low = 126.13f,
+                    Close = 127.06f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 22),
+                    High = 127.74f,
+                    Low = 125.92f,
+                    Close = 127.33f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 23),
+                    High = 128.77f,
+                    Low = 126.99f,
+                    Close = 128.71f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 24),
+                    High = 129.29f,
+                    Low = 127.81f,
+                    Close = 127.87f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 25),
+                    High = 130.06f,
+                    Low = 128.47f,
+                    Close = 128.58f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 26),
+                    High = 129.12f,
+                    Low = 128.06f,
+                    Close = 128.6f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 29),
+                    High = 129.29f,
+                    Low = 127.61f,
+                    Close = 127.93f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 30),
+                    High = 128.47f,
+                    Low = 127.6f,
+                    Close = 128.11f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 3, 31),
+                    High = 128.09f,
+                    Low = 127.00f,
+                    Close = 127.6f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 1, 4),
+                    High = 128.65f,
+                    Low = 126.9f,
+                    Close = 127.6f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 4, 5),
+                    High = 129.14f,
+                    Low = 127.49f,
+                    Close = 128.69f
+                },
+                new Price
+                {
+                    StartTime = new DateTime(10, 4, 6),
+                    High = 128.64f,
+                    Low = 127.4f,
+                    Close = 128.27f
+                },
+            };
         }
 
         private static async Task TargilAsync()
