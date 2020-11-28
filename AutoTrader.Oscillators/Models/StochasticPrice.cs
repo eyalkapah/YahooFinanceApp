@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoTrader.Models.Models.HistoricalData;
 
-namespace AutoTrader.Runner
+namespace AutoTrader.Oscillators.Models
 {
     public class StochasticPrice
     {

@@ -1,11 +1,11 @@
-﻿using AutoTrader.Models.Models.HistoricalData;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using AutoTrader.Models.Models.HistoricalData;
+using AutoTrader.Oscillators.Models;
 
-namespace AutoTrader.Runner.Oscillators
+namespace AutoTrader.Oscillators.Oscillators
 {
-    public class StochasticService
+    public class StochasticOsc
     {
         public List<StochasticPrice> Run(List<Price> prices)
         {

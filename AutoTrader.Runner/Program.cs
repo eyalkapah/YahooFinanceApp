@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoTrader.Models.Enums;
 using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Interfaces;
-using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
-using AutoTrader.Runner.Oscillators;
+using AutoTrader.Oscillators.Oscillators;
 using AutoTrader.Runner.Services;
 using AutoTrader.Yahoo.API;
 using ScottPlot;
@@ -33,9 +31,9 @@ namespace AutoTrader.Runner
 
             _priceManager = new PriceManager(yahooService);
 
-            var stochasticService = new StochasticService();
+            var stochasticOsc = new StochasticOsc();
 
-            var sData = stochasticService.Run(GetData());
+            var sData = stochasticOsc.Run(GetData());
 
             var plt = new Plot(600, 400);
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoTrader.Models.Models.HistoricalData;
-using AutoTrader.Runner.Oscillators;
+using AutoTrader.Oscillators.Oscillators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoTrader.Tests
@@ -12,13 +10,13 @@ namespace AutoTrader.Tests
     [TestClass]
     public class StochasticTests
     {
-        private StochasticService _stochasticService;
+        private StochasticOsc _stochasticOsc;
         private List<Price> _prices;
 
         [TestInitialize]
         public void Initialize()
         {
-            _stochasticService = new StochasticService();
+            _stochasticOsc = new StochasticOsc();
 
             _prices = GetData();
         }
@@ -26,7 +24,7 @@ namespace AutoTrader.Tests
         [TestMethod]
         public void StochasticTest()
         {
-            var data = _stochasticService.Run(_prices);
+            var data = _stochasticOsc.Run(_prices);
 
             Assert.AreEqual(data.First().High, 128.43f, "Highest doesn't match");
             Assert.AreEqual(data.First().Low, 124.56f, "Lowest doesn't match");
@@ -41,7 +39,7 @@ namespace AutoTrader.Tests
         [TestMethod]
         public void SlowStochasticTest()
         {
-            var data = _stochasticService.Run(_prices);
+            var data = _stochasticOsc.Run(_prices);
 
             for (var i = 3; i < data.Count; i++)
             {

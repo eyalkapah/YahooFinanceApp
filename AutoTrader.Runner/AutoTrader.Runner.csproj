@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
+    <ProjectReference Include="..\AutoTrader.Oscillators\AutoTrader.Oscillators.csproj" />
     <ProjectReference Include="..\AutoTrader.Yahoo.API\AutoTrader.Yahoo.API.csproj" />
   </ItemGroup>
 
