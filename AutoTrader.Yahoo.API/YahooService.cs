@@ -74,7 +74,7 @@ namespace AutoTrader.Yahoo.API
                 Interval.OneDay, 
                 true);
 
-            return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
+            return result.Prices.TakeLastOf(numOfDays).OrderBy(c => c.StartTime);
         }
 
         public async Task<HistoricalData> GetHistoricalDataAsync(

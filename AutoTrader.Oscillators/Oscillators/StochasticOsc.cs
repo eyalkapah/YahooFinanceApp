@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoTrader.Models.Helpers;
 using AutoTrader.Models.Models.HistoricalData;
 using AutoTrader.Oscillators.Models;
 
@@ -31,7 +32,7 @@ namespace AutoTrader.Oscillators.Oscillators
 
                 if (list.Count >= 3)
                 {
-                    sPrice.SlowValue = list.TakeLast(3).Average(c => c.Value);
+                    sPrice.SlowValue = list.TakeLastOf(3).Average(c => c.Value);
                 }
             }
 

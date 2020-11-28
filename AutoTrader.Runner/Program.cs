@@ -330,9 +330,9 @@ namespace AutoTrader.Runner
             };
         }
 
-        private static async Task TargilAsync()
+        private static void Targil()
         {
-            var prices = await CsvExtensions.ReadCsvAsync(
+            var prices = CsvExtensions.ReadCsv(
                 @"C:\Users\eykapah\Downloads\AMZN_09_07_2020-10_07_2020_1sec - Copy.csv",
                 new Dictionary<string, string>
                 {
@@ -402,7 +402,7 @@ namespace AutoTrader.Runner
 
             Console.WriteLine($"#5: Max Close % Open diff for 10 minute candles: {maxCloseOpenDiff}");
 
-            var fiveYearsPrices = await CsvExtensions.ReadCsvAsync(@"Data\\all_stocks_5yr.csv", new Dictionary<string, string>
+            var fiveYearsPrices = CsvExtensions.ReadCsv(@"Data\\all_stocks_5yr.csv", new Dictionary<string, string>
             {
                 {"date", "StartTime"},
                 {"open", "Open"},

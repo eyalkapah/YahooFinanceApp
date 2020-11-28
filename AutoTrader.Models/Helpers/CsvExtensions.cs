@@ -11,7 +11,7 @@ namespace AutoTrader.Models.Helpers
 {
     public static class CsvExtensions
     {
-        public static async Task WriteCsvAsync(this IEnumerable<Price> prices, string filePath)
+        public static void WriteCsv(this IEnumerable<Price> prices, string filePath)
         {
             var csv = new StringBuilder();
 
@@ -22,12 +22,12 @@ namespace AutoTrader.Models.Helpers
                 csv.AppendLine($"{p.StartTime:yyyy-MM-dd},{p.Symbol},{p.Open},{p.High},{p.Low},{p.Close},{p.Volume},{p.Dividends},{p.StockSplits}");
             }
 
-            await File.WriteAllTextAsync(filePath, csv.ToString());
+            File.WriteAllText(filePath, csv.ToString());
         }
 
-        public static async Task<List<Ticker>> ReadConstituentsAsync(string filePath, Dictionary<string, string> map)
+        public static List<Ticker> ReadConstituents(string filePath, Dictionary<string, string> map)
         {
-            var lines = await File.ReadAllLinesAsync(filePath);
+            var lines = File.ReadAllLines(filePath);
 
             var headers = lines[0].Split(',');
 
@@ -76,9 +76,9 @@ namespace AutoTrader.Models.Helpers
             return tickers;
         }
 
-        public static async Task<List<Price>> ReadCsvAsync(string filePath, Dictionary<string, string> map, string ticker = null)
+        public static List<Price> ReadCsv(string filePath, Dictionary<string, string> map, string ticker = null)
         {
-            var lines = await File.ReadAllLinesAsync(filePath);
+            var lines = File.ReadAllLines(filePath);
 
             var headers = lines[0].Split(',');
 
@@ -136,11 +136,11 @@ namespace AutoTrader.Models.Helpers
             return prices;
         }
 
-        public static async Task<List<Price>> ReadCsvAsync(string filePath)
+        public static List<Price> ReadCsv(string filePath)
         {
             var prices = new List<Price>();
 
-            var lines = await File.ReadAllLinesAsync(filePath);
+            var lines = File.ReadAllLines(filePath);
 
             foreach (var line in lines.Skip(1))
             {

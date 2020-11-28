@@ -15,7 +15,7 @@ namespace AutoTrader.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _prices = CsvExtensions.ReadCsvAsync(Constants.DataAllStocks5YrCsv, new Dictionary<string, string>
+            _prices = CsvExtensions.ReadCsv(Constants.DataAllStocks5YrCsv, new Dictionary<string, string>
             {
                 {"date", "StartTime"},
                 {"open", "Open"},
@@ -24,7 +24,7 @@ namespace AutoTrader.Tests
                 {"close", "Close"},
                 {"volume", "Volume"},
                 {"Name", "Symbol"}
-            }).Result;
+            });
 
             Assert.IsNotNull(_prices, "Failed to read CSV file");
         }

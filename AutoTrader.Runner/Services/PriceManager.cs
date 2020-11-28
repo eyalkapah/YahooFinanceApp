@@ -11,6 +11,7 @@ using AutoTrader.Models.Models;
 using AutoTrader.Models.Models.HistoricalData;
 using AutoTrader.Yahoo.API.Contracts.FundamentalData.StubClasses;
 
+
 namespace AutoTrader.Runner.Services
 {
     public class PriceManager
