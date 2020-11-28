@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoTrader.Models.Enums;
@@ -22,7 +23,7 @@ namespace AutoTrader.Runner
         {
             IStockDataService yahooService = new YahooService();
 
-            var data = await yahooService.GetFundamentalDataAsync("SPOT", assetProfile:true);
+            var data = await yahooService.GetFundamentalDataAsync("SPOT", assetProfile: true);
 
             var r = data.QuoteSummary.Result;
 
@@ -36,30 +37,32 @@ namespace AutoTrader.Runner
 
             var sData = stochasticService.Run(GetData());
 
-            foreach (var p in sData)
-            {
-             Console.WriteLine(p.Value);   
-            }
             var plt = new Plot(600, 400);
 
-            var ys = sData.Select(c => c.SlowValue).ToArray();
+            var slow = sData.Select(c => c.SlowValue).ToArray();
+            var vals = sData.Select(c => c.Value).ToArray();
 
-            var xs = new List<double>();
-            foreach (var p in sData)
-            {
-                xs.Add(p.StartTime.ToOADate());   
-            }
+
             //var xs = sData.Select(p => p.StartTime.ToOADate()).ToArray();
 
-            plt.PlotSignalXY(xs.ToArray(), ys);
+            plt.PlotSignalXY(sData.Select(p => p.StartTime.ToOADate()).ToArray(), slow, label: "slow", color: Color.Red,
+                lineWidth: 2, lineStyle: LineStyle.Solid, markerSize: 0);
+            plt.PlotSignalXY(sData.Select(p => p.StartTime.ToOADate()).ToArray(), vals, label: "fast",
+                color: Color.Black, lineWidth: 2, lineStyle: LineStyle.Solid);
 
             plt.Title("IBM Stochastic");
             plt.YLabel("Stochastic Unit");
             plt.XLabel("Date");
             plt.Ticks(dateTimeX: true);
+            //plt.Legend();
+            plt.AxisBounds(minY:0, maxY:100);
+            plt.AxisAuto(verticalMargin: 0.01);
+
+            plt.Add(new PlottableHLine(20, Color.Black, 1, "", false, 20, 20, LineStyle.Solid));
+            plt.Add(new PlottableHLine(80, Color.Black, 1, "", false, 80, 80, LineStyle.Solid));
 
             plt.SaveFig("IBM Slow Stochastic Chart.png");
-
+            return;
 
 
             //var list = stochasticService.Run(sData);
@@ -87,10 +90,10 @@ namespace AutoTrader.Runner
             //    false);
 
 
-            
+
 
             //var offsetPercent = 1;
-           
+
             //var vals = stochasticService.Run(prices);
 
 
