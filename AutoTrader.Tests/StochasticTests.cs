@@ -235,7 +235,7 @@ namespace AutoTrader.Tests
                 },
                 new Price
                 {
-                    StartTime = new DateTime(10, 1, 4),
+                    StartTime = new DateTime(10, 4, 1),
                     High = 128.65f,
                     Low = 126.9f,
                     Close = 127.6f
