@@ -30,7 +30,10 @@ namespace AutoTrader.Runner
             }
 
             _priceManager = new PriceManager(yahooService);
-            
+
+            var stochasticService = new StochasticService();
+
+
             await TargilAsync();
 
             var tickerManager = new TickerManager(yahooService, _priceManager);
@@ -54,14 +57,16 @@ namespace AutoTrader.Runner
                 false);
 
 
+            
+
             var offsetPercent = 1;
-            var stochasticService = new StochasticService();
+           
             var vals = stochasticService.Run(prices);
 
 
             var plt = new ScottPlot.Plot(600, 400);
 
-            plt.PlotSignal(vals.Select(c => c.Value).ToArray());
+            plt.PlotSignal(vals.Select(c => (double)c.Value).ToArray());
 
             plt.Title("Signal Plot Quickstart (5 million points)");
             plt.YLabel("Vertical Units");

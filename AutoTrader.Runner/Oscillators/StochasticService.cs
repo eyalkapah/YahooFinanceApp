@@ -1,34 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using AutoTrader.Models.Models.HistoricalData;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using AutoTrader.Models.Models;
-using AutoTrader.Models.Models.HistoricalData;
 
 namespace AutoTrader.Runner.Oscillators
 {
     public class StochasticService
     {
-        public List<Stochastic> Run(IEnumerable<Price> prices)
+        public List<StochasticPrice> Run(List<Price> prices)
         {
-            var list = new List<Stochastic>();
-
-            var enumerable = prices as Price[] ?? prices.ToArray();
-
-            if (!enumerable.Any() || enumerable.Count() <= 14)
+            if (!prices.Any() || prices.Count() < 13)
                 return null;
 
-            for (int i = 14; i < enumerable.Count(); i++)
+            var list = new List<StochasticPrice>();
+
+            for (int i = 13, j = 0; i < prices.Count(); i++, j++)
             {
-                var lowest = enumerable.TakeLast(14).Min(c => c.Low);
-                var highest = enumerable.TakeLast(14).Max(c => c.High);
-                var recentClose = enumerable[i].Close;
+                var activeData = prices.Skip(j).Take(14).ToList();
 
-                var val = ((recentClose - lowest) / (highest - lowest)) * 100;
-
-                list.Add(new Stochastic
+                var sPrice = new StochasticPrice
                 {
-                    Price = enumerable[i],
-                    Value = val
-                });
+                    High = activeData.Max(c => c.High),
+                    Low = activeData.Min(c => c.Low),
+                    Close = prices[i].Close,
+                    StartTime = prices[i].StartTime,
+                    Price = prices[i]
+                };
+
+                list.Add(sPrice);
             }
 
             return list;

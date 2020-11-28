@@ -21,6 +21,27 @@ namespace AutoTrader.Runner.Services
         {
             _service = service;
         }
+
+        public async Task<IEnumerable<Price>> GetHistoricalDataAsync(Ticker ticker, int numOfDays)
+        {
+            try
+            {
+                var result = await _service.GetHistoricalDataAsync(
+                    ticker.Symbol,
+                    DateTime.Now.AddDays(-2 * numOfDays),
+                    DateTime.Now,
+                    Interval.OneDay,
+                    true);
+
+                return result.Prices.TakeLast(numOfDays).OrderBy(c => c.StartTime);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to get historical data for {ticker.Symbol}.\r\n{e}");
+                return null;
+            }
+        }
+
         public async Task<List<Price>> GetPricesAsync(
             Ticker ticker,
             DateTime startTime,
