@@ -24,5 +24,6 @@ namespace AutoTrader.Interfaces
         List<ExtremaGroup> GetSupportExtremaGroups(List<Price> prices, ExtremaType extremePoint, double offsetPercent);
         List<ExtremaGroup> GetRejectExtremaGroups(List<Price> prices, double offsetPercent);
         Dictionary<DayOfWeek, MomentumCount> GetDaysMomentum(List<Price> prices);
+        List<double> Normalize(List<double> data);
     }
 }

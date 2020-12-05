@@ -43,7 +43,7 @@ namespace AutoTrader.Models.Helpers
 
                 for (var i = 0; i < lineSplit.Length; i++)
                 {
-                    
+
                     if (headers.Length < i)
                         continue;
 
@@ -54,7 +54,7 @@ namespace AutoTrader.Models.Helpers
                     if (string.IsNullOrEmpty(key))
                         continue;
 
-                    
+
                     if (key.Equals("Symbol"))
                         symbol = lineSplit[i];
                     else if (key.Equals("Name"))
@@ -153,8 +153,14 @@ namespace AutoTrader.Models.Helpers
                 var low = lineSplit[4];
                 var close = lineSplit[5];
                 var volume = lineSplit[6];
-                var dividends = lineSplit[7];
-                var splits = lineSplit[8];
+
+                var dividends = "0";
+                if (lineSplit.Length >= 8)
+                    dividends = lineSplit[7];
+
+                var splits = "0";
+                if (lineSplit.Length >= 9)
+                    splits = lineSplit[8];
 
                 prices.AddPrice(date, symbol, open, high, low, close, volume, dividends, splits);
             }

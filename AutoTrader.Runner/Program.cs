@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoTrader.Runner.LSTM;
 using AutoTrader.Services;
 
 namespace AutoTrader.Runner
@@ -20,16 +21,35 @@ namespace AutoTrader.Runner
         static async Task Main(string[] args)
         {
             IStockDataService yahooService = new YahooService();
-
-            var data = await yahooService.GetFundamentalDataAsync("SPOT", assetProfile: true);
-
-            var r = data.QuoteSummary.Result;
-
-            foreach (var result in r)
-            {
-            }
-
             _priceManager = new PriceManager(yahooService);
+
+            var prices = CsvExtensions.ReadCsv(
+                @"Data\\all_stocks_5yr.csv",
+                new Dictionary<string, string>
+                {
+                    {"date", "StartTime"},
+                    {"open", "Open"},
+                    {"close", "Close"},
+                    {"high", "High"},
+                    {"low", "Low"},
+                    {"volume", "Volume"},
+                    {"Name", "Symbol"}
+                });
+
+            var aalPrice = prices.Where(c => c.Symbol.Equals("AAL")).SortByStartTime();
+
+            var open = aalPrice.Select(c => (double)c.Open).ToArray();
+            var high = aalPrice.Select(c => (double)c.High).ToArray();
+            var low = aalPrice.Select(c => (double)c.Low).ToArray();
+            var close = aalPrice.Select(c => (double)c.Close).ToArray();
+            var volume = aalPrice.Select(c => c.Volume).ToArray();
+
+            var lstm = new Lstm(open, high, low, close, volume);
+            lstm.Print();
+            var scale = lstm.CalculateScale();
+            var min = lstm.CalculateMin();
+            
+
 
             var stochasticOsc = new StochasticOsc();
 
@@ -44,7 +64,7 @@ namespace AutoTrader.Runner
             //var xs = sData.Select(p => p.StartTime.ToOADate()).ToArray();
 
             plt.PlotSignalXY(sData.Select(p => p.StartTime.ToOADate()).ToArray(), slow, label: "slow", color: Color.Red,
-                lineWidth: 2, lineStyle: LineStyle.Solid, markerSize: 0);
+                    lineWidth: 2, lineStyle: LineStyle.Solid, markerSize: 0);
             plt.PlotSignalXY(sData.Select(p => p.StartTime.ToOADate()).ToArray(), vals, label: "fast",
                 color: Color.Black, lineWidth: 2, lineStyle: LineStyle.Solid);
 
@@ -53,7 +73,7 @@ namespace AutoTrader.Runner
             plt.XLabel("Date");
             plt.Ticks(dateTimeX: true);
             //plt.Legend();
-            plt.AxisBounds(minY:0, maxY:100);
+            plt.AxisBounds(minY: 0, maxY: 100);
             plt.AxisAuto(verticalMargin: 0.01);
 
             plt.Add(new PlottableHLine(20, Color.Black, 1, "", false, 20, 20, LineStyle.Solid));
@@ -125,6 +145,8 @@ namespace AutoTrader.Runner
             //var daysMomentum = _priceManager.GetDaysMomentum(prices);
             //daysMomentum.Print();
         }
+
+
 
         public static List<Price> GetData()
         {
@@ -385,7 +407,7 @@ namespace AutoTrader.Runner
             // 5
             var tenMinutesCandle = from p in prices
                                    let newCandle = p.StartTime.MakeCandleOf(10)
-                                   group new { p.StartTime, p.High, p.Low}
+                                   group new { p.StartTime, p.High, p.Low }
                                    by newCandle
                                 into newPrice
                                    select newPrice;
@@ -416,24 +438,24 @@ namespace AutoTrader.Runner
             // 6
 
             var fiveYearsGroup = from p in fiveYearsPrices
-                     group p by new
-                {
-                    p.StartTime.Year,
-                    p.StartTime.Month
-                }
+                                 group p by new
+                                 {
+                                     p.StartTime.Year,
+                                     p.StartTime.Month
+                                 }
                 into yearMonthPrice
-                let year = yearMonthPrice.Key.Year
-                let month = yearMonthPrice.Key.Month
-                let priceList = yearMonthPrice.ToList()
-                let profits = _priceManager.CalculateProfits(yearMonthPrice.ToList())
-                select new
-                {
-                    Year = year,
-                    Month = month,
-                    Prices = priceList,
-                    Profits = profits,
-                    Avg = profits.Select(c => c.ProfitPercentage).Sum() / profits.Count
-                };
+                                 let year = yearMonthPrice.Key.Year
+                                 let month = yearMonthPrice.Key.Month
+                                 let priceList = yearMonthPrice.ToList()
+                                 let profits = _priceManager.CalculateProfits(yearMonthPrice.ToList())
+                                 select new
+                                 {
+                                     Year = year,
+                                     Month = month,
+                                     Prices = priceList,
+                                     Profits = profits,
+                                     Avg = profits.Select(c => c.ProfitPercentage).Sum() / profits.Count
+                                 };
 
             var minAvg = fiveYearsGroup.Min(c => c.Avg);
 
@@ -442,8 +464,8 @@ namespace AutoTrader.Runner
             Console.WriteLine($"#6: Lowest average:  {minAvg}, Date: {minRecord.Year}-{minRecord.Month}");
 
             // 7
-           var specificPrices = fiveYearsPrices.OrderBy(c => c.StartTime)
-                .Where(c => c.StartTime.Year >= 2013 && c.StartTime.Year < 2015).ToList();
+            var specificPrices = fiveYearsPrices.OrderBy(c => c.StartTime)
+                 .Where(c => c.StartTime.Year >= 2013 && c.StartTime.Year < 2015).ToList();
 
             var top100Stocks = _priceManager.CalculateProfits(specificPrices)
                 .OrderByDescending(c => c.ProfitPercentage)

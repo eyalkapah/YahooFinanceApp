@@ -19,6 +19,16 @@ namespace AutoTrader.Services
             _service = service;
         }
 
+        public List<double> Normalize(List<double> data)
+        {
+            var min = data.Min();
+            var max = data.Max();
+
+            var list = data.Select(d => (d - min) / (max - min)).ToList();
+
+            return list;
+        }
+
         public async Task<IEnumerable<Price>> GetHistoricalDataAsync(Ticker ticker, int numOfDays)
         {
             try
